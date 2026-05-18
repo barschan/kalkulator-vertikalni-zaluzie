@@ -12,7 +12,6 @@
   --surface: #ffffff;
   --surface2: #faf8f5;
   --border: #ddd8cf;
-  --border-strong: #b8b0a0;
   --accent: #1e4d6b;
   --accent-hover: #163a52;
   --accent-light: #e6eff5;
@@ -29,157 +28,210 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'IBM Plex Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.5; }
+body { font-family: 'IBM Plex Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5; }
 
 /* HEADER */
-header {
-  background: var(--accent);
-  color: white;
-  padding: 16px 28px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-}
-header h1 { font-family: 'IBM Plex Serif', serif; font-size: 20px; font-weight: 600; letter-spacing: 0.2px; }
-header .sub { font-size: 12px; opacity: 0.7; margin-top: 2px; }
-.header-btns { margin-left: auto; display: flex; gap: 8px; }
+header { background: var(--accent); color: white; padding: 14px 22px; display: flex; align-items: center; gap: 14px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+header h1 { font-family: 'IBM Plex Serif', serif; font-size: 19px; font-weight: 600; }
+header .sub { font-size: 12px; opacity: 0.7; margin-top: 1px; }
+.hbtns { margin-left: auto; }
 
-/* CONTAINER */
-.wrap { max-width: 1200px; margin: 0 auto; padding: 20px 20px 60px; }
+/* WRAP */
+.wrap { max-width: 1200px; margin: 0 auto; padding: 16px 14px 60px; }
 
 /* CARDS */
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 18px; overflow: hidden; }
-.card-head {
-  background: var(--surface2); border-bottom: 1px solid var(--border);
-  padding: 10px 18px; font-size: 11.5px; font-weight: 600;
-  letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-muted);
-  display: flex; align-items: center; gap: 8px;
-}
-.card-body { padding: 18px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 15px; }
+.card-head { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 9px 16px; font-size: 11px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 7px; border-radius: var(--radius) var(--radius) 0 0; }
+.card-body { padding: 15px; }
 
 /* GRIDS */
-.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-.g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+.g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 11px; }
+@media (max-width: 820px) { .g4 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .g4, .g2 { grid-template-columns: 1fr; } }
 
-/* FORM */
+/* FORM CONTROLS */
 label.lbl { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
 input[type=text], input[type=number], input[type=date], select, textarea {
-  width: 100%; padding: 7px 9px;
-  border: 1px solid var(--border); border-radius: var(--radius);
-  font-family: 'IBM Plex Sans', sans-serif; font-size: 13.5px;
-  color: var(--text); background: var(--surface);
-  transition: border-color 0.12s, box-shadow 0.12s;
+  width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; color: var(--text); background: var(--surface);
+  transition: border-color 0.12s, box-shadow 0.12s; -webkit-appearance: none; appearance: none;
 }
-input:focus, select:focus, textarea:focus {
-  outline: none; border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(30,77,107,0.12);
-}
-textarea { resize: vertical; min-height: 52px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(30,77,107,0.12); }
 input[type=number] { -moz-appearance: textfield; }
 input[type=number]::-webkit-inner-spin-button { display: none; }
+select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6257' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; }
 
 /* BUTTONS */
-.btn {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 7px 13px; border: 1px solid transparent;
-  border-radius: var(--radius); font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 12.5px; font-weight: 500; cursor: pointer;
-  transition: all 0.12s; text-decoration: none; white-space: nowrap;
-}
+.btn { display: inline-flex; align-items: center; gap: 5px; padding: 8px 14px; border: 1px solid transparent; border-radius: var(--radius); font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.12s; white-space: nowrap; }
 .btn-primary { background: var(--accent); color: white; border-color: var(--accent); }
 .btn-primary:hover { background: var(--accent-hover); }
 .btn-ghost { background: transparent; color: var(--text-muted); border-color: var(--border); }
 .btn-ghost:hover { background: var(--surface2); color: var(--text); }
-.btn-green { background: var(--green); color: white; border-color: var(--green); }
+.btn-green { background: var(--green); color: white; }
 .btn-green:hover { background: #1e4530; }
 .btn-amber { background: var(--amber-bg); color: var(--amber); border-color: #e0c870; }
 .btn-amber:hover { background: #f5e8b0; }
 .btn-red { background: var(--red-bg); color: var(--red); border-color: #e8bfbf; }
 .btn-red:hover { background: #f5d0d0; }
-.btn-sm { padding: 4px 9px; font-size: 12px; }
+.btn-sm { padding: 5px 10px; font-size: 12.5px; }
 
-/* ITEMS TABLE */
-.tbl-wrap { overflow-x: auto; }
-table.items { width: 100%; border-collapse: collapse; min-width: 900px; }
-table.items th {
-  background: var(--surface2); font-size: 10.5px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);
-  padding: 7px 7px; border-bottom: 2px solid var(--border); text-align: left; white-space: nowrap;
+/* ══════════════════════════════════
+   FABRIC GROUP PICKER
+══════════════════════════════════ */
+.fpicker { position: relative; }
+
+.fpicker-btn {
+  width: 100%; min-height: 38px; padding: 7px 34px 7px 10px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px; color: var(--text); text-align: left; cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: border-color 0.12s, box-shadow 0.12s;
+  position: relative;
 }
+.fpicker-btn::after { content: '▼'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--text-muted); transition: transform 0.15s; pointer-events: none; }
+.fpicker-btn.open::after { transform: translateY(-50%) rotate(180deg); }
+.fpicker-btn:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(30,77,107,0.12); }
+.fpicker-btn.open { border-color: var(--accent); }
+.fpicker-label { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.fpicker-label.ph { color: var(--text-muted); }
+
+.fpicker-drop {
+  display: none; position: absolute; left: 0; right: 0; top: calc(100% + 2px);
+  background: var(--surface); border: 1px solid var(--accent);
+  border-radius: var(--radius); box-shadow: 0 8px 28px rgba(0,0,0,0.14);
+  z-index: 9999; max-height: 480px; overflow-y: auto;
+}
+.fpicker-drop.open { display: block; }
+
+/* Each group block inside dropdown */
+.fg-block { border-bottom: 1px solid var(--border); }
+.fg-block:last-child { border-bottom: none; }
+
+.fg-row {
+  display: flex; align-items: stretch; cursor: pointer;
+  transition: background 0.1s;
+}
+.fg-row:hover { background: #f5f3ef; }
+.fg-row.sel { background: var(--accent-light); }
+
+/* Left side: click to SELECT the group */
+.fg-select-area {
+  flex: 1; padding: 9px 10px; display: flex; align-items: flex-start; gap: 8px;
+}
+.fg-badge {
+  width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: white;
+  font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+.fg-row.sel .fg-badge { background: var(--green); }
+.fg-info { flex: 1; }
+.fg-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.fg-names { font-size: 12px; color: var(--text-muted); margin-top: 1px; line-height: 1.4; }
+
+/* Right side: click to EXPAND codes */
+.fg-expand-btn {
+  width: 42px; display: flex; align-items: center; justify-content: center;
+  border-left: 1px solid var(--border); font-size: 14px; color: var(--text-muted);
+  flex-shrink: 0; cursor: pointer; transition: background 0.1s; user-select: none;
+}
+.fg-expand-btn:hover { background: var(--border); color: var(--text); }
+.fg-expand-btn.expanded { background: var(--surface2); }
+
+/* Codes panel */
+.fg-codes-panel { display: none; background: #f9f8f6; border-top: 1px solid var(--border); padding: 8px 12px 10px 40px; }
+.fg-codes-panel.open { display: block; }
+
+.fg-fabric-line { padding: 4px 0; border-bottom: 1px dashed var(--border); display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+.fg-fabric-line:last-child { border-bottom: none; }
+.fg-fabric-name { font-size: 13px; font-weight: 600; min-width: 85px; flex-shrink: 0; }
+.fg-fabric-name.b89 { color: var(--red); }
+.fg-fabric-name.b89::after { content: ' ⚠89'; font-size: 10px; font-weight: 400; }
+.fg-fabric-note { font-size: 11px; background: #fef3d8; color: var(--amber); border-radius: 3px; padding: 1px 5px; }
+.fg-codes { font-size: 11.5px; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 2px; }
+.fg-code { background: var(--border); border-radius: 3px; padding: 1px 5px; }
+
+.warn-hint { font-size: 11.5px; color: var(--red); margin-top: 3px; display: none; }
+
+/* ══════════════════════════════════
+   DESKTOP TABLE
+══════════════════════════════════ */
+.tbl-outer { overflow-x: auto; }
+table.items { width: 100%; border-collapse: collapse; min-width: 860px; }
+table.items th { background: var(--surface2); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); padding: 7px 6px; border-bottom: 2px solid var(--border); text-align: left; white-space: nowrap; }
 table.items td { padding: 5px 5px; border-bottom: 1px solid var(--border); vertical-align: top; }
 table.items tr:last-child td { border-bottom: none; }
 table.items tr:hover td { background: #fdfcfa; }
-td input, td select { font-size: 12.5px; padding: 5px 7px; }
-
-.td-num { width: 26px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 600; padding-top: 9px !important; }
-.td-room { min-width: 90px; }
-.td-type { min-width: 120px; }
-.td-group { min-width: 110px; }
-.td-dim { width: 72px; }
+td input, td select { font-size: 13px; padding: 5px 7px; }
+.td-num { width: 24px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 600; padding-top: 10px !important; }
+.td-room { min-width: 80px; }
+.td-type { min-width: 115px; }
+.td-group { min-width: 165px; position: relative; }
+.td-dim { width: 70px; }
 .td-qty { width: 50px; }
-.td-price { width: 90px; }
-.td-total { width: 95px; }
-.td-del { width: 32px; text-align: center; }
+.td-price { width: 92px; }
+.td-total { width: 96px; }
+.td-del { width: 30px; text-align: center; }
 
-.price-computed {
-  background: var(--accent-light); border-color: var(--accent) !important;
-  color: var(--accent); font-weight: 600; text-align: right; cursor: default;
-}
-.total-computed {
-  background: var(--green-light); border-color: var(--green) !important;
-  color: var(--green); font-weight: 700; text-align: right; cursor: default;
-}
-.dim-hint { font-size: 10px; color: var(--text-muted); margin-top: 2px; display: block; }
-.warn-hint { font-size: 10px; color: var(--red); margin-top: 2px; display: block; }
+.price-computed { background: var(--accent-light) !important; border-color: #9dc4da !important; color: var(--accent); font-weight: 600; text-align: right; cursor: default; }
+.total-computed { background: var(--green-light) !important; border-color: #8bc5a0 !important; color: var(--green); font-weight: 700; text-align: right; cursor: default; }
 
-/* SURCHARGE ROW */
-.sur-row {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 9px 12px; border: 1px solid var(--border);
-  border-radius: var(--radius); margin-bottom: 6px;
-  transition: background 0.1s, border-color 0.1s;
+/* ══════════════════════════════════
+   TABLET CARDS (≤ 860px)
+══════════════════════════════════ */
+.item-cards { display: none; padding: 12px; }
+.icard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); overflow: visible; }
+.icard-head { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-radius: var(--radius) var(--radius) 0 0; }
+.icard-num { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: white; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.icard-body { padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.icard-body .span2 { grid-column: 1 / -1; }
+.icard-foot { border-top: 1px solid var(--border); padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; background: var(--surface2); border-radius: 0 0 var(--radius) var(--radius); }
+.price-badge { background: var(--accent-light); color: var(--accent); border: 1px solid #9dc4da; border-radius: var(--radius); padding: 5px 10px; font-size: 13px; font-weight: 600; }
+.total-badge { background: var(--green-light); color: var(--green); border: 1px solid #8bc5a0; border-radius: var(--radius); padding: 5px 10px; font-size: 14px; font-weight: 700; }
+
+@media (max-width: 860px) {
+  .tbl-outer { display: none !important; }
+  .item-cards { display: block; }
 }
+@media (max-width: 480px) {
+  .icard-body { grid-template-columns: 1fr; }
+  .icard-body .span2 { grid-column: 1; }
+}
+
+/* SURCHARGES */
+.sur-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 7px; transition: background 0.1s, border-color 0.1s; }
 .sur-row:has(input[type=checkbox]:checked) { background: var(--accent-light); border-color: var(--accent); }
 .sur-row label { font-size: 13px; cursor: pointer; flex: 1; text-transform: none; letter-spacing: 0; color: var(--text); font-weight: 400; }
-.sur-check { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; margin-top: 2px; }
-.sur-val { font-size: 12px; color: var(--text-muted); white-space: nowrap; padding-top: 2px; }
-.sur-input-wrap { display: flex; align-items: center; gap: 5px; }
-.sur-input-wrap input { max-width: 90px; }
+.sur-check { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; margin-top: 3px; }
+.sur-val { font-size: 12.5px; color: var(--text-muted); white-space: nowrap; padding-top: 2px; font-weight: 600; min-width: 60px; text-align: right; }
+.sur-inp { display: flex; align-items: center; gap: 5px; }
+.sur-inp input { max-width: 90px; }
 
 /* SUMMARY */
-.summary-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-@media (max-width: 680px) { .summary-section { grid-template-columns: 1fr; } }
+.sum-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 680px) { .sum-section { grid-template-columns: 1fr; } }
 .sum-table { width: 100%; border-collapse: collapse; }
-.sum-table td { padding: 7px 10px; }
+.sum-table td { padding: 8px 10px; }
 .sum-table tr:not(:last-child) td { border-bottom: 1px solid var(--border); }
-.sum-lbl { color: var(--text-muted); font-size: 12.5px; }
-.sum-val { text-align: right; font-weight: 600; white-space: nowrap; font-size: 13px; }
-.sum-total td { background: var(--accent); color: white; font-size: 15px; font-weight: 700; padding: 11px 14px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.sum-lbl { color: var(--text-muted); font-size: 13px; }
+.sum-val { text-align: right; font-weight: 600; font-size: 13.5px; white-space: nowrap; }
+.sum-total td { background: var(--accent); color: white; font-size: 16px; font-weight: 700; padding: 12px 14px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .sum-total .sum-lbl { color: rgba(255,255,255,0.8); font-size: 13px; }
-.discount-row td { background: #fff8e6; }
+.disc-row td { background: #fff9e8; }
 
 /* STORAGE */
 .stor-btns { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
 .saved-list { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.saved-item { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-bottom: 1px solid var(--border); }
+.saved-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
 .saved-item:last-child { border-bottom: none; }
 .saved-item:hover { background: var(--surface2); }
-.saved-name { flex: 1; font-size: 13px; }
-.saved-date { font-size: 11px; color: var(--text-muted); }
-
-/* STATUS */
-.status { padding: 7px 12px; border-radius: var(--radius); font-size: 12.5px; font-weight: 500; display: none; margin-top: 10px; }
+.status { padding: 8px 12px; border-radius: var(--radius); font-size: 12.5px; font-weight: 500; display: none; margin-top: 10px; }
 .status.ok { background: var(--green-light); color: var(--green); display: block; }
 .status.err { background: var(--red-bg); color: var(--red); display: block; }
 
 /* MISC */
-.note { font-size: 11.5px; color: var(--text-muted); margin-top: 5px; }
-hr.div { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
-.inline-row { display: flex; align-items: center; gap: 10px; }
-.inline-row label { flex: 1; }
+.note { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; }
+.irow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
 /* PRINT */
 @media print {
@@ -188,8 +240,9 @@ hr.div { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
   .card { box-shadow: none; break-inside: avoid; }
   header { background: var(--accent) !important; color: white !important; }
   .sum-total td { background: var(--accent) !important; color: white !important; }
-  .price-computed { background: #eef4f8 !important; }
-  .total-computed { background: #eef6f0 !important; }
+  .tbl-outer { display: block !important; }
+  .item-cards { display: none !important; }
+  .fpicker-drop { display: none !important; }
 }
 </style>
 </head>
@@ -200,18 +253,18 @@ hr.div { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
     <h1>Kalkulátor vertikálních žaluzií</h1>
     <div class="sub">Standard 127 mm · Lux 127 mm &nbsp;|&nbsp; Ceny s marží 21 %</div>
   </div>
-  <div class="header-btns no-print">
-    <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Tisk / PDF</button>
+  <div class="hbtns no-print">
+    <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Tisk</button>
   </div>
 </header>
 
 <div class="wrap">
 
-<!-- ═══ ZÁHLAVÍ ZAKÁZKY ═══ -->
+<!-- ZÁHLAVÍ -->
 <div class="card">
   <div class="card-head">📋 Záhlaví zakázky</div>
   <div class="card-body">
-    <div class="g4" style="margin-bottom:12px">
+    <div class="g4" style="margin-bottom:11px">
       <div><label class="lbl">Zákazník *</label><input type="text" id="f_name" placeholder="Jan Novák" oninput="recalc()"></div>
       <div><label class="lbl">Číslo zakázky</label><input type="text" id="f_order" placeholder="2024-001"></div>
       <div><label class="lbl">Datum</label><input type="date" id="f_date"></div>
@@ -224,126 +277,99 @@ hr.div { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
   </div>
 </div>
 
-<!-- ═══ POLOŽKY ═══ -->
-<div class="card">
+<!-- POLOŽKY -->
+<div class="card" style="overflow:visible">
   <div class="card-head">📐 Položky zakázky</div>
-  <div class="card-body" style="padding:0">
-    <div class="tbl-wrap">
+  <div style="overflow:visible">
+
+    <!-- Desktop table -->
+    <div class="tbl-outer">
       <table class="items" id="tbl">
-        <thead>
-          <tr>
-            <th class="td-num">#</th>
-            <th class="td-room">Místnost</th>
-            <th class="td-type">Typ žaluzie</th>
-            <th class="td-group">Skupina látky</th>
-            <th class="td-dim">Šířka (mm)</th>
-            <th class="td-dim">Výška (mm)</th>
-            <th class="td-qty">Ks</th>
-            <th class="td-price">Cena/ks (Kč)</th>
-            <th class="td-total">Celkem (Kč)</th>
-            <th class="td-del"></th>
-          </tr>
-        </thead>
+        <thead><tr>
+          <th class="td-num">#</th>
+          <th class="td-room">Místnost</th>
+          <th class="td-type">Typ žaluzie</th>
+          <th class="td-group">Skupina látky <span style="font-weight:400;opacity:0.7">(▼ rozbal kódy)</span></th>
+          <th class="td-dim">Šířka mm</th>
+          <th class="td-dim">Výška mm</th>
+          <th class="td-qty">Ks</th>
+          <th class="td-price">Cena/ks</th>
+          <th class="td-total">Celkem</th>
+          <th class="td-del"></th>
+        </tr></thead>
         <tbody id="tbody"></tbody>
       </table>
     </div>
-    <div style="padding:12px 14px" class="no-print">
-      <button class="btn btn-primary btn-sm" onclick="addRow()">+ Přidat řádek</button>
+
+    <!-- Tablet cards -->
+    <div class="item-cards" id="itemCards"></div>
+
+    <div style="padding:11px 14px" class="no-print">
+      <button class="btn btn-primary btn-sm" onclick="addRow()">+ Přidat položku</button>
     </div>
   </div>
 </div>
 
-<!-- ═══ PŘÍPLATKY ═══ -->
+<!-- PŘÍPLATKY -->
 <div class="card">
   <div class="card-head">⚙️ Příplatky</div>
   <div class="card-body">
-
-    <!-- 89 mm -->
     <div class="sur-row">
       <input type="checkbox" class="sur-check" id="p89" onchange="recalc()">
       <label for="p89"><strong>Provedení 89 mm</strong> — +20 % k ceně žaluzií<br>
-        <span style="font-size:11px;color:var(--text-muted)">Nelze u látek: Beata, Carol, Debra, Evelyn, Marina, Melvin, Peggy, Classic, Ronnie, Sharon, Sonia FR, Tanya, Viola, Melisa BO</span>
-      </label>
+        <span style="font-size:11.5px;color:var(--text-muted)">Nelze u látek: Beata, Carol, Debra, Evelyn, Marina, Melvin, Peggy, Classic, Ronnie, Sharon, Sonia FR, Tanya, Viola, Melisa BO</span></label>
       <span class="sur-val" id="v89">0 Kč</span>
     </div>
-
-    <!-- Konzola -->
     <div class="sur-row">
       <input type="checkbox" class="sur-check" id="pKonzola" onchange="recalc()">
       <label for="pKonzola">Konzola — 36 Kč/ks × celkový počet kusů</label>
       <span class="sur-val" id="vKonzola">0 Kč</span>
     </div>
-
-    <!-- Bezpečnostní prvek -->
     <div class="sur-row">
       <input type="checkbox" class="sur-check" id="pBez" onchange="recalc()">
       <label for="pBez">Bezpečnostní prvek — 15 Kč/ks × celkový počet kusů</label>
       <span class="sur-val" id="vBez">0 Kč</span>
     </div>
-
-    <!-- Šikminy -->
-    <div class="sur-row" style="flex-wrap:wrap;gap:8px;">
+    <div class="sur-row" style="flex-wrap:wrap;gap:8px">
       <input type="checkbox" class="sur-check" id="pSikminy" onchange="recalc()">
-      <label for="pSikminy" style="flex:1;min-width:200px">
-        <strong>Šikminy</strong> — zadej cenu ručně (Kč)<br>
-        <span style="font-size:11px;color:var(--text-muted)">Výpočet: (vyšší výška × šířka × cena/m²) + 30 %. Platí jen pro šikmé otvory — zadej výsledek ručně.</span>
-      </label>
-      <div class="sur-input-wrap">
-        <input type="number" id="sikminyKc" value="0" min="0" step="1" oninput="recalc()" placeholder="Kč">
-        <span style="font-size:12px;color:var(--text-muted)">Kč</span>
-      </div>
+      <label for="pSikminy" style="flex:1;min-width:180px"><strong>Šikminy</strong> — zadej částku ručně<br>
+        <span style="font-size:11.5px;color:var(--text-muted)">Vzorec: (vyšší výška × šířka × cena/m²) + 30 %</span></label>
+      <div class="sur-inp"><input type="number" id="sikminyKc" value="0" min="0" step="1" oninput="recalc()" style="max-width:90px"><span style="font-size:12px;color:var(--text-muted)">Kč</span></div>
       <span class="sur-val" id="vSikminy">0 Kč</span>
     </div>
-
-    <p class="note" style="margin-top:8px">⚠ Příplatek 89 mm se počítá z ceny žaluzií bez dalších příplatků. Konzola a bezpečnostní prvek jsou Kč/ks z celkového počtu kusů v zakázce.</p>
+    <p class="note" style="margin-top:6px">⚠ Příplatek 89 mm = 20 % z ceny žaluzií. Konzola a bezpečnostní prvek jsou Kč/ks z celkového počtu kusů v zakázce.</p>
   </div>
 </div>
 
-<!-- ═══ SOUHRN ═══ -->
+<!-- SOUHRN -->
 <div class="card">
   <div class="card-head">💰 Souhrn zakázky</div>
   <div class="card-body">
-    <div class="summary-section">
-      <!-- levá strana – tabulka -->
+    <div class="sum-section">
       <div>
         <table class="sum-table">
-          <tr>
-            <td class="sum-lbl">Žaluzie celkem</td>
-            <td class="sum-val" id="sZaluzie">0 Kč</td>
-          </tr>
-          <tr>
-            <td class="sum-lbl">Příplatky celkem</td>
-            <td class="sum-val" id="sPriplatky">0 Kč</td>
-          </tr>
-          <tr>
-            <td class="sum-lbl">Montáž</td>
-            <td class="sum-val" id="sMontaz">0 Kč</td>
-          </tr>
-          <tr class="discount-row" id="discountRow">
+          <tr><td class="sum-lbl">Žaluzie celkem</td><td class="sum-val" id="sZaluzie">0 Kč</td></tr>
+          <tr><td class="sum-lbl">Příplatky celkem</td><td class="sum-val" id="sPriplatky">0 Kč</td></tr>
+          <tr><td class="sum-lbl">Montáž</td><td class="sum-val" id="sMontaz">0 Kč</td></tr>
+          <tr class="disc-row" id="discRow" style="display:none">
             <td class="sum-lbl">Sleva (<span id="discPct">0</span> %) – bez dopravy</td>
             <td class="sum-val" id="sSleva" style="color:var(--red)">− 0 Kč</td>
           </tr>
-          <tr>
-            <td class="sum-lbl">Doprava</td>
-            <td class="sum-val" id="sDoprava">0 Kč</td>
-          </tr>
+          <tr><td class="sum-lbl">Doprava</td><td class="sum-val" id="sDoprava">zdarma</td></tr>
           <tr class="sum-total">
             <td class="sum-lbl">Celková cena zakázky</td>
             <td class="sum-val" id="sCelkem">0 Kč</td>
           </tr>
         </table>
       </div>
-
-      <!-- pravá strana – vstupy -->
-      <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;flex-direction:column;gap:14px">
         <div>
           <label class="lbl">Montáž (Kč/ks) — výchozí 250 Kč</label>
-          <div class="inline-row">
-            <input type="number" id="montazKs" value="250" min="0" step="1" oninput="recalc()" style="max-width:120px">
-            <span style="font-size:12px;color:var(--text-muted)">× <span id="montazKsTotal">0</span> ks = <strong id="montazTotal">0 Kč</strong></span>
+          <div class="irow">
+            <input type="number" id="montazKs" value="250" min="0" step="1" oninput="recalc()" style="max-width:110px">
+            <span style="font-size:12px;color:var(--text-muted)">× <span id="montazKsN">0</span> ks = <strong id="montazTot">0 Kč</strong></span>
           </div>
         </div>
-
         <div>
           <label class="lbl">Doprava – zóna</label>
           <select id="doprava" onchange="recalc()">
@@ -353,535 +379,557 @@ hr.div { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
             <option value="1200">Zóna 4: 50,1–70 km — 1 200 Kč</option>
             <option value="custom">Nad 70 km — zadat ručně</option>
           </select>
-          <div id="dopravaCustomWrap" style="margin-top:6px;display:none">
-            <input type="number" id="dopravaCustom" value="0" min="0" step="1" oninput="recalc()" placeholder="Zadej Kč">
+          <div id="dopCustomWrap" style="margin-top:6px;display:none">
+            <input type="number" id="dopCustom" value="0" min="0" step="1" oninput="recalc()" placeholder="Kč">
           </div>
         </div>
-
         <div>
           <label class="lbl">Sleva (%)</label>
-          <div class="inline-row">
-            <input type="number" id="sleva" value="0" min="0" max="100" step="0.5" oninput="recalc()" style="max-width:100px">
-            <span style="font-size:12px;color:var(--text-muted)">% z (žaluzie + příplatky + montáž)</span>
+          <div class="irow">
+            <input type="number" id="sleva" value="0" min="0" max="100" step="0.5" oninput="recalc()" style="max-width:90px">
+            <span style="font-size:12px;color:var(--text-muted)">% z (žaluzie + příplatky + montáž). Na dopravu se nevztahuje.</span>
           </div>
-          <p class="note">Sleva se nevztahuje na dopravu.</p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ UKLÁDÁNÍ ═══ -->
+<!-- UKLÁDÁNÍ -->
 <div class="card no-print">
   <div class="card-head">💾 Ukládání zakázek</div>
   <div class="card-body">
     <div class="stor-btns">
       <button class="btn btn-green btn-sm" onclick="saveOrder()">💾 Uložit zakázku</button>
-      <button class="btn btn-ghost btn-sm" onclick="toggleSavedList()">📂 Načíst uloženou zakázku</button>
-      <button class="btn btn-amber btn-sm" onclick="exportJSON()">⬇ Exportovat jako JSON</button>
-      <label class="btn btn-ghost btn-sm" style="cursor:pointer">⬆ Importovat ze souboru JSON
-        <input type="file" accept=".json" onchange="importJSON(event)" style="display:none">
-      </label>
+      <button class="btn btn-ghost btn-sm" onclick="toggleSaved()">📂 Načíst uloženou</button>
+      <button class="btn btn-amber btn-sm" onclick="exportJSON()">⬇ Export JSON</button>
+      <label class="btn btn-ghost btn-sm" style="cursor:pointer">⬆ Import JSON<input type="file" accept=".json" onchange="importJSON(event)" style="display:none"></label>
       <button class="btn btn-red btn-sm" onclick="clearAll()">🗑 Nová zakázka</button>
     </div>
     <div id="statusMsg" class="status"></div>
-    <div id="savedListWrap" style="display:none;margin-top:10px">
-      <div id="savedList" class="saved-list"></div>
-    </div>
+    <div id="savedWrap" style="display:none;margin-top:10px"><div id="savedList" class="saved-list"></div></div>
   </div>
 </div>
 
-</div><!-- /wrap -->
+</div>
 
 <script>
-// ═══════════════════════════════════════════
-// CENÍKOVÁ DATA
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
 
-// Výškové pásy: [min, max] (max = Infinity pro poslední)
 const HEIGHT_BANDS = [
-  { label: '0–1500',    min: 0,    max: 1500  },
-  { label: '1510–2000', min: 1501, max: 2000  },
-  { label: '2010–2400', min: 2001, max: 2400  },
-  { label: '2410–3000', min: 2401, max: 3000  },
-  { label: '3010–4000', min: 3001, max: 4000  },
-  { label: '4010+',     min: 4001, max: Infinity }
+  { min:0,    max:1500 },
+  { min:1501, max:2000 },
+  { min:2001, max:2400 },
+  { min:2401, max:3000 },
+  { min:3001, max:4000 },
+  { min:4001, max:Infinity }
 ];
 
-// Skupiny látek: klíč = číslo skupiny, hodnoty = [cena Standard, cena Lux] pro každé pásmo
-// Pořadí pásem: 0-1500 | 1510-2000 | 2010-2400 | 2410-3000 | 3010-4000 | 4010+
 const PRICES = {
-  standard: {
-    1: [705, 599, 574, 546, 520, 497],
-    2: [766, 655, 628, 603, 574, 546],
-    3: [797, 683, 672, 628, 603, 574],
-    4: [863, 766, 724, 683, 643, 615],
-    5: [884, 789, 746, 706, 662, 639],
-    6: [904, 806, 766, 724, 683, 655],
-    7: [952, 857, 814, 772, 733, 705],
-    // Sk. 4-7 mají druhý ceník (pro větší výšky) — dle ceníku je toto 6 standardních pásem
-    // Poznámka: ceník má dva řádky pro sk. 4-7 (jiné řady), ale výšky jsou stejné pásy
-    // => data výše jsou z prvního řádku tabulky (sk.1-7 všechny pásy)
-  },
-  lux: {
-    1: [740, 636, 610, 580, 555, 530],
-    2: [802, 693, 666, 641, 612, 581],
-    3: [831, 722, 706, 666, 641, 612],
-    4: [898, 802, 763, 722, 679, 653],
-    5: [923, 826, 781, 742, 700, 676],
-    6: [939, 841, 802, 763, 722, 693],
-    7: [990, 892, 851, 808, 768, 741],
+  standard: { 1:[705,599,574,546,520,497], 2:[766,655,628,603,574,546], 3:[797,683,672,628,603,574], 4:[863,766,724,683,643,615], 5:[884,789,746,706,662,639], 6:[904,806,766,724,683,655], 7:[952,857,814,772,733,705] },
+  lux:      { 1:[740,636,610,580,555,530], 2:[802,693,666,641,612,581], 3:[831,722,706,666,641,612], 4:[898,802,763,722,679,653], 5:[923,826,781,742,700,676], 6:[939,841,802,763,722,693], 7:[990,892,851,808,768,741] }
+};
+
+const GROUPS = [
+  { num:1, title:'Skupina 1', fabrics:[
+    { name:'Sonia',  b89:false, note:'', codes:'101, 102, 103, 104, 105, 106, 108, 113, 114, 116, 118, 122, 126, 127, 129, 134, 135' },
+    { name:'Evelyn', b89:true,  note:'', codes:'5201, 5202, 5203, 5204, 5205, 5206, 5207, 5208, 5209, 5210, 5211, 5212, 5213, 5214, 5216, 5217, 5218' },
+    { name:'Polly',  b89:false, note:'', codes:'9411, 9412, 9413, 9422, 9440, 9444, 9445, 9449, 9463, 9473' },
+    { name:'Ronnie', b89:true,  note:'', codes:'901, 902, 906, 911, 916, 918' },
+    { name:'Carol',  b89:true,  note:'', codes:'5101, 5102, 5103, 5105, 5106, 5107, 5108, 5109, 5110, 5111, 5112, 5113, 5114, 5115' },
+    { name:'Inez',   b89:false, note:'', codes:'1401, 1402, 1403, 1407, 1408, 1409, 1410, 1411, 1412, 1413, 1415, 1416, 1427, 1428, 1432, 1436, 1440' },
+  ]},
+  { num:2, title:'Skupina 2', fabrics:[
+    { name:'Corra', b89:false, note:'', codes:'5007, 5011, 5012, 5014, 5022, 5030, 5040, 5041, 5042, 5043, 5044, 5045, 5056, 5060, 5063, 5064, 5070, 5076, 5080' },
+    { name:'Beata', b89:true,  note:'', codes:'9601, 9602, 9603, 9604, 9605, 9606, 9607, 9608, 9609, 9610, 9611, 9612, 9613, 9614, 9616, 9617, 9619, 9620, 9621' },
+    { name:'Jenny', b89:false, note:'', codes:'9204, 9207, 9211, 9212, 9214, 9222, 9240, 9241, 9242, 9244, 9245, 9257, 9260, 9261, 9263, 9265, 9276' },
+  ]},
+  { num:3, title:'Skupina 3', fabrics:[
+    { name:'Sandra',   b89:false, note:'',         codes:'8201, 8202, 8203, 8204, 8205, 8206, 8207, 8208, 8209, 8210, 8212, 8213, 8214, 8215, 8216, 8217, 8218, 8219, 8220, 8221, 8222, 8223' },
+    { name:'Sonia FR', b89:true,  note:'🔥 nehořl.', codes:'0101FR, 0103FR, 0116FR' },
+    { name:'Ray',      b89:false, note:'',         codes:'6601, 6202, 6603, 6604, 6605, 6607, 6608, 6609, 6610, 6611, 6612, 6613, 6614' },
+  ]},
+  { num:4, title:'Skupina 4', fabrics:[
+    { name:'Vanesa', b89:false, note:'', codes:'5501, 5502, 5503, 5505, 5506, 5507, 5508, 5509, 5510, 5511' },
+    { name:'Viola',  b89:true,  note:'', codes:'9804, 9814, 9822, 9838, 9840, 9841, 9844, 9845, 9862, 9863, 9865, 9867, 9873, 9879' },
+  ]},
+  { num:5, title:'Skupina 5', fabrics:[
+    { name:'Aneta',  b89:false, note:'', codes:'6501, 6502, 6503, 6505, 6506, 6507, 6508, 6509, 6510, 6511, 6512, 6513' },
+    { name:'Marina', b89:true,  note:'', codes:'9004, 9007, 9011, 9041, 9049, 9054, 9060, 9073' },
+    { name:'Vesna',  b89:false, note:'', codes:'6903, 6905, 6906, 6907, 6908, 6909, 6911' },
+  ]},
+  { num:6, title:'Skupina 6', fabrics:[
+    { name:'Patricia', b89:false, note:'',         codes:'1903, 1904, 1906, 1907, 1908, 1910, 1918' },
+    { name:'Peggy',    b89:true,  note:'🔥 nehořl.', codes:'500, 501, 515, 520, 525, 530, 535, 538, 540' },
+    { name:'Classic',  b89:true,  note:'',         codes:'1078, 2103, 2400, 9092, 9119, 9165' },
+  ]},
+  { num:7, title:'Skupina 7', fabrics:[
+    { name:'Debra',     b89:true, note:'',          codes:'3602, 3608, 3609' },
+    { name:'Melisa BO', b89:true, note:'',          codes:'5401, 5402, 5403, 5404, 5405, 5406, 5407, 5408, 5409, 5410, 5411, 5412, 5415, 5416, 5417, 5418' },
+    { name:'Melvin',    b89:true, note:'',          codes:'324, 325' },
+    { name:'Tanya',     b89:true, note:'🔥 nehořl.', codes:'610, 630' },
+    { name:'Sharon',    b89:true, note:'',          codes:'10002, 10021, 10027, 10220' },
+  ]},
+];
+
+// ══════════════════════════════════════════════
+// FABRIC PICKER
+// ══════════════════════════════════════════════
+
+function buildPickerHTML(pickerId) {
+  const rows = GROUPS.map(g => {
+    const fabricLines = g.fabrics.map(f => {
+      const codes = f.codes.split(',').map(c => `<span class="fg-code">${c.trim()}</span>`).join(' ');
+      const note  = f.note ? `<span class="fg-fabric-note">${f.note}</span>` : '';
+      return `<div class="fg-fabric-line">
+        <span class="fg-fabric-name${f.b89 ? ' b89' : ''}">${f.name}</span>
+        ${note}
+        <span class="fg-codes">${codes}</span>
+      </div>`;
+    }).join('');
+
+    const fabricNames = g.fabrics.map(f => f.name).join(', ');
+    const hasBan = g.fabrics.some(f => f.b89);
+
+    return `<div class="fg-block">
+      <div class="fg-row" id="${pickerId}_row${g.num}">
+        <div class="fg-select-area" onclick="pickerSelect('${pickerId}', ${g.num})">
+          <div class="fg-badge">${g.num}</div>
+          <div class="fg-info">
+            <div class="fg-title">${g.title}${hasBan ? ' <span style="font-size:10px;color:var(--red);font-weight:400">⚠ část nelze v 89mm</span>' : ''}</div>
+            <div class="fg-names">${fabricNames}</div>
+          </div>
+        </div>
+        <div class="fg-expand-btn" onclick="pickerToggleExpand('${pickerId}', ${g.num}, this)" title="Zobrazit kódy barev">▼</div>
+      </div>
+      <div class="fg-codes-panel" id="${pickerId}_codes${g.num}">${fabricLines}</div>
+    </div>`;
+  }).join('');
+
+  return `<div class="fpicker" id="${pickerId}_wrap">
+    <button type="button" class="fpicker-btn" id="${pickerId}_btn" onclick="pickerToggle('${pickerId}')">
+      <span class="fpicker-label ph" id="${pickerId}_lbl">– klikněte pro výběr skupiny –</span>
+    </button>
+    <div class="fpicker-drop" id="${pickerId}_drop">${rows}</div>
+    <input type="hidden" id="${pickerId}_val">
+    <div class="warn-hint" id="${pickerId}_warn"></div>
+  </div>`;
+}
+
+// Toggle open/close picker
+function pickerToggle(pid) {
+  const drop = document.getElementById(pid + '_drop');
+  const btn  = document.getElementById(pid + '_btn');
+  const isOpen = drop.classList.contains('open');
+  // close all
+  document.querySelectorAll('.fpicker-drop.open').forEach(d => {
+    d.classList.remove('open');
+    document.getElementById(d.id.replace('_drop', '_btn')).classList.remove('open');
+  });
+  if (!isOpen) { drop.classList.add('open'); btn.classList.add('open'); }
+}
+
+// Toggle code panel expansion (▼ button)
+function pickerToggleExpand(pid, gNum, btnEl) {
+  const panel = document.getElementById(pid + '_codes' + gNum);
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open');
+  btnEl.textContent = isOpen ? '▼' : '▲';
+  btnEl.classList.toggle('expanded', !isOpen);
+}
+
+// Select a group
+function pickerSelect(pid, gNum) {
+  const g = GROUPS.find(g => g.num === gNum);
+  if (!g) return;
+
+  document.getElementById(pid + '_val').value = gNum;
+
+  const lbl = document.getElementById(pid + '_lbl');
+  lbl.textContent = `Sk. ${gNum}: ${g.fabrics.map(f => f.name).join(', ')}`;
+  lbl.classList.remove('ph');
+
+  // Mark selected row
+  GROUPS.forEach(gr => {
+    const row = document.getElementById(pid + '_row' + gr.num);
+    if (row) row.classList.toggle('sel', gr.num === gNum);
+  });
+
+  // Close picker
+  document.getElementById(pid + '_drop').classList.remove('open');
+  document.getElementById(pid + '_btn').classList.remove('open');
+
+  pickerUpdateWarn(pid);
+  recalc();
+}
+
+function pickerUpdateWarn(pid) {
+  const gNum = parseInt(document.getElementById(pid + '_val').value) || 0;
+  const is89 = document.getElementById('p89').checked;
+  const g = GROUPS.find(g => g.num === gNum);
+  const hasBan = g ? g.fabrics.some(f => f.b89) : false;
+  const allBan = g ? g.fabrics.every(f => f.b89) : false;
+  const warn = document.getElementById(pid + '_warn');
+  if (warn) {
+    if (is89 && hasBan) {
+      warn.textContent = allBan ? '⛔ Tato skupina není dostupná v provedení 89 mm' : '⚠ Skupina obsahuje látky, které nelze v 89 mm (označeny červeně v rozbalovací nabídce)';
+      warn.style.display = 'block';
+    } else {
+      warn.textContent = '';
+      warn.style.display = 'none';
+    }
   }
-};
-
-// Látky a jejich skupiny
-const FABRIC_GROUPS = {
-  'Skupina 1 – Sonia, Evelyn, Polly, Ronnie, Carol, Inez': 1,
-  'Skupina 2 – Corra, Beata, Jenny': 2,
-  'Skupina 3 – Sandra, Sonia FR, Ray': 3,
-  'Skupina 4 – Vanesa, Viola': 4,
-  'Skupina 5 – Aneta, Marina, Vesna': 5,
-  'Skupina 6 – Patricia, Peggy, Classic': 6,
-  'Skupina 7 – Debra, Melisa BO, Melvin, Tanya, Sharon': 7,
-};
-
-// Látky zakázané pro provedení 89 mm
-const BANNED_89 = ['Beata','Carol','Debra','Evelyn','Marina','Melvin','Peggy','Classic','Ronnie','Sharon','Sonia FR','Tanya','Viola','Melisa BO'];
-
-// Látky obsažené v každé skupině (pro validaci 89 mm)
-const GROUP_FABRICS = {
-  1: ['Sonia','Evelyn','Polly','Ronnie','Carol','Inez'],
-  2: ['Corra','Beata','Jenny'],
-  3: ['Sandra','Sonia FR','Ray'],
-  4: ['Vanesa','Viola'],
-  5: ['Aneta','Marina','Vesna'],
-  6: ['Patricia','Peggy','Classic'],
-  7: ['Debra','Melisa BO','Melvin','Tanya','Sharon'],
-};
-
-// Obsahuje skupina látky zakázané pro 89 mm?
-function groupHasBanned(groupNum) {
-  const fabrics = GROUP_FABRICS[groupNum] || [];
-  return fabrics.some(f => BANNED_89.includes(f));
-}
-function groupAllBanned(groupNum) {
-  const fabrics = GROUP_FABRICS[groupNum] || [];
-  return fabrics.every(f => BANNED_89.includes(f));
 }
 
-// ═══════════════════════════════════════════
-// VÝPOČET CENY
-// ═══════════════════════════════════════════
+// Close pickers on outside click
+document.addEventListener('click', e => {
+  if (!e.target.closest('.fpicker')) {
+    document.querySelectorAll('.fpicker-drop.open').forEach(d => {
+      d.classList.remove('open');
+      const b = document.getElementById(d.id.replace('_drop','_btn'));
+      if (b) b.classList.remove('open');
+    });
+  }
+});
 
-function getPricePer_m2(type, groupNum, heightMm) {
-  const bandIdx = HEIGHT_BANDS.findIndex(b => heightMm >= b.min && heightMm <= b.max);
-  if (bandIdx === -1) return null;
-  const table = type === 'standard' ? PRICES.standard : PRICES.lux;
-  const arr = table[groupNum];
-  if (!arr) return null;
-  return arr[bandIdx];
-}
-
-function ceilKc(val) { return Math.ceil(val); }
-
-function calcRowPrice(type, groupNum, widthMm, heightMm) {
-  if (!type || !groupNum || !widthMm || !heightMm) return null;
-  const pricePerM2 = getPricePer_m2(type, groupNum, heightMm);
-  if (pricePerM2 === null) return null;
-  // plocha v m²
-  const area = (widthMm / 1000) * (heightMm / 1000);
-  return { pricePerM2, area, pricePerKs: ceilKc(area * pricePerM2) };
-}
-
-// ═══════════════════════════════════════════
-// ŘÁDKY TABULKY
-// ═══════════════════════════════════════════
-
+// ══════════════════════════════════════════════
+// ROW MANAGEMENT
+// ══════════════════════════════════════════════
 let rowId = 0;
+const ALL_PICKERS = {}; // rowId -> pickerId
 
 function addRow() {
   rowId++;
   const id = rowId;
+  const pid = 'fp' + id; // picker id
+  ALL_PICKERS[id] = pid;
+
+  // TABLE ROW
   const tbody = document.getElementById('tbody');
   const tr = document.createElement('tr');
-  tr.id = 'row_' + id;
+  tr.id = 'trow_' + id;
   tr.innerHTML = `
     <td class="td-num">${tbody.rows.length + 1}</td>
-    <td class="td-room"><input type="text" placeholder="Pokoj…" oninput="recalc()"></td>
+    <td class="td-room"><input type="text" id="rroom_${id}" placeholder="Pokoj…" oninput="recalc()"></td>
     <td class="td-type">
-      <select onchange="recalc()">
-        <option value="">– vyberte –</option>
+      <select id="rtype_${id}" onchange="recalc()">
+        <option value="">– typ –</option>
         <option value="standard">Standard 127</option>
         <option value="lux">Lux 127</option>
       </select>
     </td>
-    <td class="td-group">
-      <select onchange="recalc(); checkBan(${id})">
-        <option value="">– vyberte –</option>
-        ${Object.keys(FABRIC_GROUPS).map(g => `<option value="${FABRIC_GROUPS[g]}">${g}</option>`).join('')}
-      </select>
-      <span class="warn-hint" id="warn_${id}" style="display:none">⚠ Skupina obsahuje látky zakázané pro 89 mm</span>
-    </td>
-    <td class="td-dim"><input type="number" min="100" max="9999" step="1" placeholder="mm" oninput="recalc()"></td>
-    <td class="td-dim"><input type="number" min="100" max="9999" step="1" placeholder="mm" oninput="recalc()"></td>
-    <td class="td-qty"><input type="number" min="1" max="999" step="1" value="1" oninput="recalc()"></td>
-    <td class="td-price"><input class="price-computed" type="text" readonly value="—" id="price_${id}"></td>
-    <td class="td-total"><input class="total-computed" type="text" readonly value="—" id="total_${id}"></td>
-    <td class="td-del"><button class="btn btn-red btn-sm no-print" onclick="delRow(${id})" title="Smazat řádek">✕</button></td>
+    <td class="td-group" style="overflow:visible;position:relative">${buildPickerHTML(pid)}</td>
+    <td class="td-dim"><input type="number" id="rw_${id}" min="100" max="9999" placeholder="mm" oninput="recalc()"></td>
+    <td class="td-dim"><input type="number" id="rh_${id}" min="100" max="9999" placeholder="mm" oninput="recalc()"></td>
+    <td class="td-qty"><input type="number" id="rqty_${id}" min="1" value="1" oninput="recalc()"></td>
+    <td class="td-price"><input class="price-computed" id="rprice_${id}" type="text" readonly value="—"></td>
+    <td class="td-total"><input class="total-computed" id="rtotal_${id}" type="text" readonly value="—"></td>
+    <td class="td-del no-print"><button class="btn btn-red btn-sm" onclick="delRow(${id})">✕</button></td>
   `;
   tbody.appendChild(tr);
+
+  // TABLET CARD (uses same picker id as table → same hidden input & same labels)
+  const cards = document.getElementById('itemCards');
+  const card = document.createElement('div');
+  card.className = 'icard';
+  card.id = 'card_' + id;
+  const cpid = 'cfp' + id; // card picker — separate instance, but we'll sync values
+  card.innerHTML = `
+    <div class="icard-head">
+      <div class="icard-num" id="cnum_${id}">${cards.children.length + 1}</div>
+      <div style="flex:1;font-size:13px;font-weight:600">Položka ${id}</div>
+      <button class="btn btn-red btn-sm no-print" onclick="delRow(${id})">✕ Smazat</button>
+    </div>
+    <div class="icard-body">
+      <div class="span2">
+        <label class="lbl">Místnost</label>
+        <input type="text" id="croom_${id}" placeholder="Pokoj, místnost…" oninput="document.getElementById('rroom_${id}').value=this.value;recalc()">
+      </div>
+      <div>
+        <label class="lbl">Typ žaluzie</label>
+        <select id="ctype_${id}" onchange="document.getElementById('rtype_${id}').value=this.value;recalc()">
+          <option value="">– vyberte –</option>
+          <option value="standard">Standard 127</option>
+          <option value="lux">Lux 127</option>
+        </select>
+      </div>
+      <div>
+        <label class="lbl">Počet kusů</label>
+        <input type="number" id="cqty_${id}" min="1" value="1" oninput="document.getElementById('rqty_${id}').value=this.value;recalc()">
+      </div>
+      <div class="span2" style="overflow:visible;position:relative">
+        <label class="lbl">Skupina látky — klikněte pro výběr; ▼ rozbalí kódy barev</label>
+        <div id="cpicker_${id}">${buildPickerHTML(cpid)}</div>
+      </div>
+      <div>
+        <label class="lbl">Šířka (mm)</label>
+        <input type="number" id="cw_${id}" min="100" max="9999" placeholder="mm" oninput="document.getElementById('rw_${id}').value=this.value;recalc()">
+      </div>
+      <div>
+        <label class="lbl">Výška (mm)</label>
+        <input type="number" id="ch_${id}" min="100" max="9999" placeholder="mm" oninput="document.getElementById('rh_${id}').value=this.value;recalc()">
+      </div>
+    </div>
+    <div class="icard-foot">
+      <div style="font-size:12px;color:var(--text-muted)">Cena/ks: <span class="price-badge" id="cprice_${id}">—</span></div>
+      <div style="font-size:12px;color:var(--text-muted)">Celkem: <span class="total-badge" id="ctotal_${id}">—</span></div>
+    </div>
+  `;
+  cards.appendChild(card);
+
+  // Wire card picker to sync with table picker
+  ALL_PICKERS['c' + id] = cpid;
+
   renumberRows();
   recalc();
 }
 
+// Override pickerSelect to cross-sync table↔card
+const _origPickerSelect = pickerSelect;
+window.pickerSelect = function(pid, gNum) {
+  // call original
+  _origPickerSelect(pid, gNum);
+
+  // Find the row id this picker belongs to
+  for (const [rid, p] of Object.entries(ALL_PICKERS)) {
+    if (p === pid) {
+      // find the other picker for this row
+      const numId = rid.startsWith('c') ? rid.slice(1) : rid;
+      const tPid = ALL_PICKERS[numId];
+      const cPid = ALL_PICKERS['c' + numId];
+      const otherPid = pid === tPid ? cPid : tPid;
+      if (otherPid && otherPid !== pid) {
+        // sync label + value + selection without triggering another pickerSelect
+        const g = GROUPS.find(g => g.num === gNum);
+        if (!g) break;
+        const val = document.getElementById(otherPid + '_val');
+        if (val) val.value = gNum;
+        const lbl = document.getElementById(otherPid + '_lbl');
+        if (lbl) { lbl.textContent = `Sk. ${gNum}: ${g.fabrics.map(f => f.name).join(', ')}`; lbl.classList.remove('ph'); }
+        GROUPS.forEach(gr => {
+          const row = document.getElementById(otherPid + '_row' + gr.num);
+          if (row) row.classList.toggle('sel', gr.num === gNum);
+        });
+        pickerUpdateWarn(otherPid);
+      }
+      break;
+    }
+  }
+};
+
 function delRow(id) {
-  const tr = document.getElementById('row_' + id);
-  if (tr) tr.remove();
+  document.getElementById('trow_'  + id)?.remove();
+  document.getElementById('card_'  + id)?.remove();
+  delete ALL_PICKERS[id];
+  delete ALL_PICKERS['c' + id];
   renumberRows();
   recalc();
 }
 
 function renumberRows() {
-  const rows = document.querySelectorAll('#tbody tr');
-  rows.forEach((tr, i) => {
-    tr.querySelector('.td-num').textContent = i + 1;
+  document.querySelectorAll('#tbody tr').forEach((tr, i) => {
+    const n = tr.querySelector('.td-num'); if (n) n.textContent = i + 1;
+  });
+  document.querySelectorAll('.icard').forEach((c, i) => {
+    const n = c.querySelector('.icard-num'); if (n) n.textContent = i + 1;
   });
 }
 
-function checkBan(id) {
-  const tr = document.getElementById('row_' + id);
-  if (!tr) return;
-  const groupVal = parseInt(tr.querySelectorAll('select')[1].value);
-  const warn = document.getElementById('warn_' + id);
-  if (!warn) return;
-  const is89 = document.getElementById('p89').checked;
-  if (is89 && groupVal && groupHasBanned(groupVal)) {
-    warn.style.display = 'block';
-    warn.textContent = groupAllBanned(groupVal)
-      ? '⛔ Tato skupina nelze v provedení 89 mm'
-      : '⚠ Skupina obsahuje látky zakázané pro 89 mm';
-  } else {
-    warn.style.display = 'none';
-  }
-}
+// ══════════════════════════════════════════════
+// CALCULATION
+// ══════════════════════════════════════════════
 
-// ═══════════════════════════════════════════
-// HLAVNÍ PŘEPOČET
-// ═══════════════════════════════════════════
+function ceilKc(v) { return Math.ceil(v); }
+function fmt(n) { return n.toLocaleString('cs-CZ') + ' Kč'; }
 
-function fmt(n) {
-  return n.toLocaleString('cs-CZ', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' Kč';
+function getPM2(type, gNum, h) {
+  const bi = HEIGHT_BANDS.findIndex(b => h >= b.min && h <= b.max);
+  if (bi < 0) return null;
+  return ((PRICES[type] || {})[gNum] || [])[bi] ?? null;
 }
 
 function recalc() {
-  const rows = document.querySelectorAll('#tbody tr');
-  let totalZaluzie = 0;
-  let totalKs = 0;
+  let totalZ = 0, totalKs = 0;
 
-  rows.forEach(tr => {
-    const id = parseInt(tr.id.replace('row_', ''));
-    const selects = tr.querySelectorAll('select');
-    const inputs = tr.querySelectorAll('input[type=number]');
-    const type = selects[0].value;
-    const groupNum = parseInt(selects[1].value) || 0;
-    const w = parseInt(inputs[0].value) || 0;
-    const h = parseInt(inputs[1].value) || 0;
-    const qty = parseInt(inputs[2].value) || 1;
+  document.querySelectorAll('#tbody tr').forEach(tr => {
+    const id   = parseInt(tr.id.replace('trow_',''));
+    const pid  = ALL_PICKERS[id] || ('fp' + id);
+    const type = (document.getElementById('rtype_'  + id) || {}).value || '';
+    const gNum = parseInt((document.getElementById(pid + '_val') || {}).value) || 0;
+    const w    = parseInt((document.getElementById('rw_'    + id) || {}).value) || 0;
+    const h    = parseInt((document.getElementById('rh_'    + id) || {}).value) || 0;
+    const qty  = parseInt((document.getElementById('rqty_'  + id) || {}).value) || 1;
 
-    const priceEl = document.getElementById('price_' + id);
-    const totalEl = document.getElementById('total_' + id);
+    const tPriceEl  = document.getElementById('rprice_' + id);
+    const tTotalEl  = document.getElementById('rtotal_' + id);
+    const cPriceBdg = document.getElementById('cprice_' + id);
+    const cTotalBdg = document.getElementById('ctotal_' + id);
 
-    if (type && groupNum && w > 0 && h > 0) {
-      const res = calcRowPrice(type, groupNum, w, h);
-      if (res) {
-        const rowTotal = ceilKc(res.pricePerKs * qty);
-        priceEl.value = res.pricePerKs.toLocaleString('cs-CZ') + ' Kč';
-        totalEl.value = rowTotal.toLocaleString('cs-CZ') + ' Kč';
-        totalZaluzie += rowTotal;
+    if (type && gNum && w > 0 && h > 0) {
+      const pm2 = getPM2(type, gNum, h);
+      if (pm2 !== null) {
+        const area = (w / 1000) * (h / 1000);
+        const pks  = ceilKc(area * pm2);
+        const rowT = ceilKc(pks * qty);
+        const ps = pks.toLocaleString('cs-CZ') + ' Kč';
+        const ts = rowT.toLocaleString('cs-CZ') + ' Kč';
+        if (tPriceEl)  tPriceEl.value       = ps;
+        if (tTotalEl)  tTotalEl.value       = ts;
+        if (cPriceBdg) cPriceBdg.textContent = ps;
+        if (cTotalBdg) cTotalBdg.textContent = ts;
+        totalZ  += rowT;
         totalKs += qty;
       } else {
-        priceEl.value = '?';
-        totalEl.value = '?';
+        ['rprice_','rtotal_'].forEach(p => { const e = document.getElementById(p+id); if(e) e.value='chyba'; });
+        if (cPriceBdg) cPriceBdg.textContent = 'chyba';
+        if (cTotalBdg) cTotalBdg.textContent = 'chyba';
       }
     } else {
-      priceEl.value = '—';
-      totalEl.value = '—';
+      ['rprice_','rtotal_'].forEach(p => { const e = document.getElementById(p+id); if(e) e.value='—'; });
+      if (cPriceBdg) cPriceBdg.textContent = '—';
+      if (cTotalBdg) cTotalBdg.textContent = '—';
     }
 
-    // 89 mm warnings
-    checkBan(id);
+    // update both pickers' warnings
+    pickerUpdateWarn(pid);
+    const cpid = ALL_PICKERS['c' + id] || ('cfp' + id);
+    pickerUpdateWarn(cpid);
   });
 
   // Příplatky
-  const is89 = document.getElementById('p89').checked;
-  const isKonzola = document.getElementById('pKonzola').checked;
-  const isBez = document.getElementById('pBez').checked;
-  const isSikminy = document.getElementById('pSikminy').checked;
-  const sikminyKc = isSikminy ? (parseInt(document.getElementById('sikminyKc').value) || 0) : 0;
-
-  const p89val = is89 ? ceilKc(totalZaluzie * 0.20) : 0;
-  const pKonzolaVal = isKonzola ? (totalKs * 36) : 0;
-  const pBezVal = isBez ? (totalKs * 15) : 0;
-
-  document.getElementById('v89').textContent = fmt(p89val);
-  document.getElementById('vKonzola').textContent = fmt(pKonzolaVal);
-  document.getElementById('vBez').textContent = fmt(pBezVal);
-  document.getElementById('vSikminy').textContent = fmt(sikminyKc);
-
-  const totalPriplatky = p89val + pKonzolaVal + pBezVal + sikminyKc;
+  const is89  = document.getElementById('p89').checked;
+  const p89v  = is89 ? ceilKc(totalZ * 0.20) : 0;
+  const pKonz = document.getElementById('pKonzola').checked ? totalKs * 36 : 0;
+  const pBez  = document.getElementById('pBez').checked     ? totalKs * 15 : 0;
+  const pSik  = document.getElementById('pSikminy').checked ? (parseInt(document.getElementById('sikminyKc').value)||0) : 0;
+  document.getElementById('v89').textContent      = fmt(p89v);
+  document.getElementById('vKonzola').textContent = fmt(pKonz);
+  document.getElementById('vBez').textContent     = fmt(pBez);
+  document.getElementById('vSikminy').textContent = fmt(pSik);
+  const totalPripl = p89v + pKonz + pBez + pSik;
 
   // Montáž
-  const montazKs = parseInt(document.getElementById('montazKs').value) || 0;
-  const montazTotal = montazKs * totalKs;
-  document.getElementById('montazKsTotal').textContent = totalKs;
-  document.getElementById('montazTotal').textContent = fmt(montazTotal);
+  const mKs = parseInt(document.getElementById('montazKs').value) || 0;
+  const mTot = mKs * totalKs;
+  document.getElementById('montazKsN').textContent  = totalKs;
+  document.getElementById('montazTot').textContent  = fmt(mTot);
 
   // Sleva
-  const slevaRaw = parseFloat(document.getElementById('sleva').value) || 0;
-  const slevaBase = totalZaluzie + totalPriplatky + montazTotal;
-  const slevaVal = ceilKc(slevaBase * slevaRaw / 100);
-  document.getElementById('discPct').textContent = slevaRaw % 1 === 0 ? slevaRaw : slevaRaw.toFixed(1);
-  document.getElementById('sSleva').textContent = '− ' + fmt(slevaVal);
-  const discountRow = document.getElementById('discountRow');
-  discountRow.style.display = slevaRaw > 0 ? '' : 'none';
+  const slevaR = parseFloat(document.getElementById('sleva').value) || 0;
+  const slevaB = totalZ + totalPripl + mTot;
+  const slevaV = ceilKc(slevaB * slevaR / 100);
+  document.getElementById('discPct').textContent = Number.isInteger(slevaR) ? slevaR : slevaR.toFixed(1);
+  document.getElementById('sSleva').textContent  = '− ' + fmt(slevaV);
+  document.getElementById('discRow').style.display = slevaR > 0 ? '' : 'none';
 
   // Doprava
-  const dopravaSel = document.getElementById('doprava').value;
-  const customWrap = document.getElementById('dopravaCustomWrap');
-  let dopravaVal = 0;
-  if (dopravaSel === 'custom') {
-    customWrap.style.display = 'block';
-    dopravaVal = parseInt(document.getElementById('dopravaCustom').value) || 0;
-  } else {
-    customWrap.style.display = 'none';
-    dopravaVal = parseInt(dopravaSel) || 0;
-  }
+  const dop = document.getElementById('doprava').value;
+  document.getElementById('dopCustomWrap').style.display = dop === 'custom' ? 'block' : 'none';
+  const dopV = dop === 'custom' ? (parseInt(document.getElementById('dopCustom').value)||0) : (parseInt(dop)||0);
 
-  const celkem = slevaBase - slevaVal + dopravaVal;
-
-  // Výpis
-  document.getElementById('sZaluzie').textContent = fmt(totalZaluzie);
-  document.getElementById('sPriplatky').textContent = fmt(totalPriplatky);
-  document.getElementById('sMontaz').textContent = fmt(montazTotal);
-  document.getElementById('sDoprava').textContent = dopravaVal === 0 ? 'zdarma' : fmt(dopravaVal);
-  document.getElementById('sCelkem').textContent = fmt(celkem);
+  const celkem = slevaB - slevaV + dopV;
+  document.getElementById('sZaluzie').textContent   = fmt(totalZ);
+  document.getElementById('sPriplatky').textContent = fmt(totalPripl);
+  document.getElementById('sMontaz').textContent    = fmt(mTot);
+  document.getElementById('sDoprava').textContent   = dopV === 0 ? 'zdarma' : fmt(dopV);
+  document.getElementById('sCelkem').textContent    = fmt(celkem);
 }
 
-// ═══════════════════════════════════════════
-// SERIALIZACE (pro uložení/export)
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════════════
+// STATE SERIALIZE / LOAD
+// ══════════════════════════════════════════════
 
 function getState() {
   const rows = [];
   document.querySelectorAll('#tbody tr').forEach(tr => {
-    const id = parseInt(tr.id.replace('row_', ''));
-    const selects = tr.querySelectorAll('select');
-    const inputs = tr.querySelectorAll('input');
+    const id  = parseInt(tr.id.replace('trow_',''));
+    const pid = ALL_PICKERS[id] || ('fp' + id);
     rows.push({
-      room: inputs[0].value,
-      type: selects[0].value,
-      group: selects[1].value,
-      w: inputs[1].value,
-      h: inputs[2].value,
-      qty: inputs[3].value,
+      room:  (document.getElementById('rroom_' + id)||{}).value||'',
+      type:  (document.getElementById('rtype_' + id)||{}).value||'',
+      group: (document.getElementById(pid + '_val')||{}).value||'',
+      w:     (document.getElementById('rw_'    + id)||{}).value||'',
+      h:     (document.getElementById('rh_'    + id)||{}).value||'',
+      qty:   (document.getElementById('rqty_'  + id)||{}).value||1,
     });
   });
   return {
-    header: {
-      name: document.getElementById('f_name').value,
-      order: document.getElementById('f_order').value,
-      date: document.getElementById('f_date').value,
-      phone: document.getElementById('f_phone').value,
-      address: document.getElementById('f_address').value,
-      note: document.getElementById('f_note').value,
-    },
+    header: { name:document.getElementById('f_name').value, order:document.getElementById('f_order').value, date:document.getElementById('f_date').value, phone:document.getElementById('f_phone').value, address:document.getElementById('f_address').value, note:document.getElementById('f_note').value },
     rows,
-    surcharges: {
-      p89: document.getElementById('p89').checked,
-      pKonzola: document.getElementById('pKonzola').checked,
-      pBez: document.getElementById('pBez').checked,
-      pSikminy: document.getElementById('pSikminy').checked,
-      sikminyKc: document.getElementById('sikminyKc').value,
-    },
-    summary: {
-      montazKs: document.getElementById('montazKs').value,
-      doprava: document.getElementById('doprava').value,
-      dopravaCustom: document.getElementById('dopravaCustom').value,
-      sleva: document.getElementById('sleva').value,
-    }
+    sur: { p89:document.getElementById('p89').checked, pKonzola:document.getElementById('pKonzola').checked, pBez:document.getElementById('pBez').checked, pSikminy:document.getElementById('pSikminy').checked, sikminyKc:document.getElementById('sikminyKc').value },
+    sum: { montazKs:document.getElementById('montazKs').value, doprava:document.getElementById('doprava').value, dopCustom:document.getElementById('dopCustom').value, sleva:document.getElementById('sleva').value }
   };
 }
 
-function loadState(state) {
-  // Header
-  const h = state.header || {};
-  document.getElementById('f_name').value = h.name || '';
-  document.getElementById('f_order').value = h.order || '';
-  document.getElementById('f_date').value = h.date || '';
-  document.getElementById('f_phone').value = h.phone || '';
-  document.getElementById('f_address').value = h.address || '';
-  document.getElementById('f_note').value = h.note || '';
-
-  // Rows
-  document.getElementById('tbody').innerHTML = '';
-  rowId = 0;
-  (state.rows || []).forEach(r => {
+function loadState(st) {
+  const h = st.header||{};
+  document.getElementById('f_name').value=h.name||''; document.getElementById('f_order').value=h.order||'';
+  document.getElementById('f_date').value=h.date||''; document.getElementById('f_phone').value=h.phone||'';
+  document.getElementById('f_address').value=h.address||''; document.getElementById('f_note').value=h.note||'';
+  document.getElementById('tbody').innerHTML=''; document.getElementById('itemCards').innerHTML='';
+  rowId=0; Object.keys(ALL_PICKERS).forEach(k => delete ALL_PICKERS[k]);
+  (st.rows||[]).forEach(r => {
     addRow();
-    const tr = document.querySelector('#tbody tr:last-child');
-    const selects = tr.querySelectorAll('select');
-    const inputs = tr.querySelectorAll('input');
-    inputs[0].value = r.room || '';
-    selects[0].value = r.type || '';
-    selects[1].value = r.group || '';
-    inputs[1].value = r.w || '';
-    inputs[2].value = r.h || '';
-    inputs[3].value = r.qty || 1;
+    const id=rowId, pid=ALL_PICKERS[id]||('fp'+id), cpid=ALL_PICKERS['c'+id]||('cfp'+id);
+    const set = (elId, val) => { const e=document.getElementById(elId); if(e) e.value=val; };
+    set('rroom_'+id, r.room||''); set('rtype_'+id, r.type||''); set('rw_'+id, r.w||''); set('rh_'+id, r.h||''); set('rqty_'+id, r.qty||1);
+    set('croom_'+id, r.room||''); set('ctype_'+id, r.type||''); set('cw_'+id,  r.w||''); set('ch_'+id,  r.h||''); set('cqty_'+id, r.qty||1);
+    if (r.group) { pickerSelect(pid, parseInt(r.group)); }
   });
-
-  // Surcharges
-  const s = state.surcharges || {};
-  document.getElementById('p89').checked = !!s.p89;
-  document.getElementById('pKonzola').checked = !!s.pKonzola;
-  document.getElementById('pBez').checked = !!s.pBez;
-  document.getElementById('pSikminy').checked = !!s.pSikminy;
-  document.getElementById('sikminyKc').value = s.sikminyKc || 0;
-
-  // Summary
-  const sm = state.summary || {};
-  document.getElementById('montazKs').value = sm.montazKs ?? 250;
-  document.getElementById('doprava').value = sm.doprava || '0';
-  document.getElementById('dopravaCustom').value = sm.dopravaCustom || 0;
-  document.getElementById('sleva').value = sm.sleva || 0;
-
+  const s=st.sur||{}; document.getElementById('p89').checked=!!s.p89; document.getElementById('pKonzola').checked=!!s.pKonzola; document.getElementById('pBez').checked=!!s.pBez; document.getElementById('pSikminy').checked=!!s.pSikminy; document.getElementById('sikminyKc').value=s.sikminyKc||0;
+  const sm=st.sum||{}; document.getElementById('montazKs').value=sm.montazKs??250; document.getElementById('doprava').value=sm.doprava||'0'; document.getElementById('dopCustom').value=sm.dopCustom||0; document.getElementById('sleva').value=sm.sleva||0;
   recalc();
 }
 
-// ═══════════════════════════════════════════
-// STORAGE – localStorage
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════════════
+// STORAGE
+// ══════════════════════════════════════════════
 
 function saveOrder() {
-  const state = getState();
-  const name = (state.header.name || 'Zákazník').trim();
-  const date = new Date().toLocaleDateString('cs-CZ');
-  const key = 'vz_' + name + '_' + Date.now();
-  state._meta = { key, name, date };
-  localStorage.setItem(key, JSON.stringify(state));
-  showStatus('Zakázka „' + name + '" uložena (' + date + ').', 'ok');
-  renderSavedList();
+  const st=getState(), name=(st.header.name||'Zákazník').trim(), date=new Date().toLocaleDateString('cs-CZ'), key='vz_'+name+'_'+Date.now();
+  st._meta={key,name,date}; localStorage.setItem(key,JSON.stringify(st));
+  showStatus('Zakázka „'+name+'" uložena ('+date+').','ok'); renderSaved();
 }
-
-function loadOrder(key) {
-  const raw = localStorage.getItem(key);
-  if (!raw) return;
-  loadState(JSON.parse(raw));
-  document.getElementById('savedListWrap').style.display = 'none';
-  showStatus('Zakázka načtena.', 'ok');
-}
-
-function deleteOrder(key) {
-  localStorage.removeItem(key);
-  renderSavedList();
-}
-
-function toggleSavedList() {
-  const wrap = document.getElementById('savedListWrap');
-  const visible = wrap.style.display !== 'none';
-  wrap.style.display = visible ? 'none' : 'block';
-  if (!visible) renderSavedList();
-}
-
-function renderSavedList() {
-  const keys = Object.keys(localStorage).filter(k => k.startsWith('vz_'));
-  const list = document.getElementById('savedList');
-  if (!keys.length) {
-    list.innerHTML = '<div style="padding:12px 14px;font-size:12.5px;color:var(--text-muted)">Žádné uložené zakázky.</div>';
-    return;
-  }
-  list.innerHTML = keys.map(k => {
-    let meta = {};
-    try { meta = JSON.parse(localStorage.getItem(k))._meta || {}; } catch {}
-    return `<div class="saved-item">
-      <div>
-        <div class="saved-name">${meta.name || k}</div>
-        <div class="saved-date">${meta.date || ''}</div>
-      </div>
-      <div style="display:flex;gap:6px;margin-left:auto">
-        <button class="btn btn-ghost btn-sm" onclick="loadOrder('${k}')">Načíst</button>
-        <button class="btn btn-red btn-sm" onclick="deleteOrder('${k}');renderSavedList()">Smazat</button>
-      </div>
-    </div>`;
+function loadOrder(key) { const raw=localStorage.getItem(key); if(!raw) return; loadState(JSON.parse(raw)); document.getElementById('savedWrap').style.display='none'; showStatus('Zakázka načtena.','ok'); }
+function deleteOrder(key) { localStorage.removeItem(key); renderSaved(); }
+function toggleSaved() { const w=document.getElementById('savedWrap'); const v=w.style.display!=='none'; w.style.display=v?'none':'block'; if(!v) renderSaved(); }
+function renderSaved() {
+  const keys=Object.keys(localStorage).filter(k=>k.startsWith('vz_')), list=document.getElementById('savedList');
+  if(!keys.length) { list.innerHTML='<div style="padding:12px;font-size:12.5px;color:var(--text-muted)">Žádné uložené zakázky.</div>'; return; }
+  list.innerHTML=keys.sort().reverse().map(k => {
+    let m={}; try{m=JSON.parse(localStorage.getItem(k))._meta||{};}catch{}
+    return `<div class="saved-item"><div><div style="font-size:13px">${m.name||k}</div><div style="font-size:11px;color:var(--text-muted)">${m.date||''}</div></div><div style="display:flex;gap:6px;margin-left:auto"><button class="btn btn-ghost btn-sm" onclick="loadOrder('${k}')">Načíst</button><button class="btn btn-red btn-sm" onclick="deleteOrder('${k}');renderSaved()">Smazat</button></div></div>`;
   }).join('');
 }
-
-// ═══════════════════════════════════════════
-// EXPORT / IMPORT JSON
-// ═══════════════════════════════════════════
-
 function exportJSON() {
-  const state = getState();
-  const name = (state.header.name || 'zakázka').replace(/\s+/g,'_');
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'VZ_' + name + '_' + new Date().toISOString().slice(0,10) + '.json';
-  a.click();
-  URL.revokeObjectURL(url);
+  const st=getState(), name=(st.header.name||'zakázka').replace(/\s+/g,'_');
+  const blob=new Blob([JSON.stringify(st,null,2)],{type:'application/json'}), url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='VZ_'+name+'_'+new Date().toISOString().slice(0,10)+'.json'; a.click(); URL.revokeObjectURL(url);
 }
-
-function importJSON(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const state = JSON.parse(e.target.result);
-      loadState(state);
-      showStatus('Soubor „' + file.name + '" byl úspěšně importován.', 'ok');
-    } catch {
-      showStatus('Chyba: soubor nelze načíst (není platný JSON).', 'err');
-    }
-  };
-  reader.readAsText(file);
-  event.target.value = '';
+function importJSON(ev) {
+  const file=ev.target.files[0]; if(!file) return;
+  const r=new FileReader(); r.onload=e=>{try{loadState(JSON.parse(e.target.result));showStatus('Soubor importován.','ok');}catch{showStatus('Chyba: neplatný JSON.','err');}};
+  r.readAsText(file); ev.target.value='';
 }
-
 function clearAll() {
-  if (!confirm('Opravdu smazat celou zakázku? (Data nebudou odstraněna z úložiště.)')) return;
-  document.getElementById('tbody').innerHTML = '';
-  rowId = 0;
-  document.getElementById('f_name').value = '';
-  document.getElementById('f_order').value = '';
-  document.getElementById('f_date').value = '';
-  document.getElementById('f_phone').value = '';
-  document.getElementById('f_address').value = '';
-  document.getElementById('f_note').value = '';
-  document.getElementById('p89').checked = false;
-  document.getElementById('pKonzola').checked = false;
-  document.getElementById('pBez').checked = false;
-  document.getElementById('pSikminy').checked = false;
-  document.getElementById('sikminyKc').value = 0;
-  document.getElementById('montazKs').value = 250;
-  document.getElementById('doprava').value = '0';
-  document.getElementById('dopravaCustom').value = 0;
-  document.getElementById('sleva').value = 0;
+  if(!confirm('Opravdu smazat zakázku?')) return;
+  document.getElementById('tbody').innerHTML=''; document.getElementById('itemCards').innerHTML=''; rowId=0; Object.keys(ALL_PICKERS).forEach(k=>delete ALL_PICKERS[k]);
+  ['f_name','f_order','f_phone','f_address','f_note'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f_date').value=new Date().toISOString().slice(0,10);
+  ['p89','pKonzola','pBez','pSikminy'].forEach(id=>document.getElementById(id).checked=false);
+  document.getElementById('sikminyKc').value=0; document.getElementById('montazKs').value=250;
+  document.getElementById('doprava').value='0'; document.getElementById('dopCustom').value=0; document.getElementById('sleva').value=0;
   recalc();
 }
-
 function showStatus(msg, type) {
-  const el = document.getElementById('statusMsg');
-  el.textContent = msg;
-  el.className = 'status ' + type;
-  clearTimeout(el._timer);
-  el._timer = setTimeout(() => { el.className = 'status'; }, 4000);
+  const el=document.getElementById('statusMsg'); el.textContent=msg; el.className='status '+type;
+  clearTimeout(el._t); el._t=setTimeout(()=>{el.className='status';},4500);
 }
 
-// ═══════════════════════════════════════════
 // INIT
-// ═══════════════════════════════════════════
-
-document.getElementById('f_date').value = new Date().toISOString().slice(0, 10);
+document.getElementById('f_date').value = new Date().toISOString().slice(0,10);
 addRow();
 </script>
 </body>
