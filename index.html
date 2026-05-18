@@ -97,11 +97,13 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .fpicker-label { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .fpicker-label.ph { color: var(--text-muted); }
 
+/* Dropdown is teleported to <body> as a fixed floating layer — never clipped by overflow */
 .fpicker-drop {
-  display: none; position: absolute; left: 0; right: 0; top: calc(100% + 2px);
+  display: none; position: fixed;
   background: var(--surface); border: 1px solid var(--accent);
-  border-radius: var(--radius); box-shadow: 0 8px 28px rgba(0,0,0,0.14);
-  z-index: 9999; max-height: 480px; overflow-y: auto;
+  border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  z-index: 99999; max-height: 60vh; overflow-y: auto;
+  min-width: 280px;
 }
 .fpicker-drop.open { display: block; }
 
@@ -251,7 +253,7 @@ td input, td select { font-size: 13px; padding: 5px 7px; }
 <header>
   <div>
     <h1>Kalkulátor vertikálních žaluzií</h1>
-    <div class="sub">Standard 127 mm · Lux 127 mm &nbsp;|&nbsp; Ceny s marží 21 %</div>
+    <div class="sub">Standard 127 mm · Lux 127 mm</div>
   </div>
   <div class="hbtns no-print">
     <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Tisk</button>
@@ -478,6 +480,9 @@ const GROUPS = [
 // FABRIC PICKER
 // ══════════════════════════════════════════════
 
+// Portal storage: pid -> inner HTML for the floating dropdown
+const _pickerDropHTML = {};
+
 function buildPickerHTML(pickerId) {
   const rows = GROUPS.map(g => {
     const fabricLines = g.fabrics.map(f => {
@@ -508,28 +513,72 @@ function buildPickerHTML(pickerId) {
     </div>`;
   }).join('');
 
+  // Store rows HTML for portal creation; button has no inline drop
+  _pickerDropHTML[pickerId] = rows;
+
   return `<div class="fpicker" id="${pickerId}_wrap">
     <button type="button" class="fpicker-btn" id="${pickerId}_btn" onclick="pickerToggle('${pickerId}')">
       <span class="fpicker-label ph" id="${pickerId}_lbl">– klikněte pro výběr skupiny –</span>
     </button>
-    <div class="fpicker-drop" id="${pickerId}_drop">${rows}</div>
     <input type="hidden" id="${pickerId}_val">
     <div class="warn-hint" id="${pickerId}_warn"></div>
   </div>`;
 }
 
-// Toggle open/close picker
-function pickerToggle(pid) {
-  const drop = document.getElementById(pid + '_drop');
+// Reposition an already-open floating drop to align with its button
+function _positionDrop(pid) {
   const btn  = document.getElementById(pid + '_btn');
-  const isOpen = drop.classList.contains('open');
-  // close all
-  document.querySelectorAll('.fpicker-drop.open').forEach(d => {
-    d.classList.remove('open');
-    document.getElementById(d.id.replace('_drop', '_btn')).classList.remove('open');
-  });
-  if (!isOpen) { drop.classList.add('open'); btn.classList.add('open'); }
+  const drop = document.getElementById(pid + '_drop');
+  if (!btn || !drop) return;
+  const r = btn.getBoundingClientRect();
+  const viewH = window.innerHeight;
+  const dropH = Math.min(drop.scrollHeight, viewH * 0.6);
+  const spaceBelow = viewH - r.bottom;
+  const top = spaceBelow >= dropH + 8 || spaceBelow >= r.top
+    ? r.bottom + 2                  // open downward
+    : r.top - dropH - 2;            // open upward
+  drop.style.top  = top + 'px';
+  drop.style.left = r.left + 'px';
+  drop.style.width = Math.max(r.width, 320) + 'px';
 }
+
+// Toggle open/close picker — uses portal (drop lives in <body>)
+function pickerToggle(pid) {
+  const isAlreadyOpen = !!document.querySelector(`.fpicker-drop[data-pid="${pid}"].open`);
+
+  // Close all open pickers
+  document.querySelectorAll('.fpicker-drop.open').forEach(d => {
+    const p = d.dataset.pid;
+    d.classList.remove('open');
+    const b = document.getElementById(p + '_btn');
+    if (b) b.classList.remove('open');
+  });
+
+  if (isAlreadyOpen) return; // was open → just closed
+
+  // Ensure portal drop exists in body
+  let drop = document.getElementById(pid + '_drop');
+  if (!drop) {
+    drop = document.createElement('div');
+    drop.className = 'fpicker-drop';
+    drop.id = pid + '_drop';
+    drop.dataset.pid = pid;
+    drop.innerHTML = _pickerDropHTML[pid] || '';
+    document.body.appendChild(drop);
+  }
+
+  drop.classList.add('open');
+  document.getElementById(pid + '_btn').classList.add('open');
+  _positionDrop(pid);
+}
+
+// Reposition on scroll/resize
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.fpicker-drop.open').forEach(d => _positionDrop(d.dataset.pid));
+}, true);
+window.addEventListener('resize', () => {
+  document.querySelectorAll('.fpicker-drop.open').forEach(d => _positionDrop(d.dataset.pid));
+});
 
 // Toggle code panel expansion (▼ button)
 function pickerToggleExpand(pid, gNum, btnEl) {
@@ -557,9 +606,11 @@ function pickerSelect(pid, gNum) {
     if (row) row.classList.toggle('sel', gr.num === gNum);
   });
 
-  // Close picker
-  document.getElementById(pid + '_drop').classList.remove('open');
-  document.getElementById(pid + '_btn').classList.remove('open');
+  // Close picker (portal drop)
+  const drop = document.getElementById(pid + '_drop');
+  if (drop) drop.classList.remove('open');
+  const btn = document.getElementById(pid + '_btn');
+  if (btn) btn.classList.remove('open');
 
   pickerUpdateWarn(pid);
   recalc();
@@ -583,12 +634,13 @@ function pickerUpdateWarn(pid) {
   }
 }
 
-// Close pickers on outside click
+// Close pickers on outside click — drop lives in <body> so check both .fpicker and .fpicker-drop
 document.addEventListener('click', e => {
-  if (!e.target.closest('.fpicker')) {
+  if (!e.target.closest('.fpicker') && !e.target.closest('.fpicker-drop')) {
     document.querySelectorAll('.fpicker-drop.open').forEach(d => {
+      const p = d.dataset.pid;
       d.classList.remove('open');
-      const b = document.getElementById(d.id.replace('_drop','_btn'));
+      const b = document.getElementById(p + '_btn');
       if (b) b.classList.remove('open');
     });
   }
