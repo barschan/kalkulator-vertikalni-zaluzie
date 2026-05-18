@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulátor – Vertikální žaluzie</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #f4f1ed;
+  --surface: #ffffff;
+  --surface2: #faf8f5;
+  --border: #ddd8cf;
+  --border-strong: #b8b0a0;
+  --accent: #1e4d6b;
+  --accent-hover: #163a52;
+  --accent-light: #e6eff5;
+  --green: #2a5c40;
+  --green-light: #e6f0ea;
+  --red: #7a1f1f;
+  --red-bg: #fdf0f0;
+  --amber: #7a4f00;
+  --amber-bg: #fdf5e0;
+  --text: #1a1714;
+  --text-muted: #6b6257;
+  --radius: 5px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'IBM Plex Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 13.5px; line-height: 1.5; }
+
+/* HEADER */
+header {
+  background: var(--accent);
+  color: white;
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+header h1 { font-family: 'IBM Plex Serif', serif; font-size: 20px; font-weight: 600; letter-spacing: 0.2px; }
+header .sub { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+.header-btns { margin-left: auto; display: flex; gap: 8px; }
+
+/* CONTAINER */
+.wrap { max-width: 1200px; margin: 0 auto; padding: 20px 20px 60px; }
+
+/* CARDS */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 18px; overflow: hidden; }
+.card-head {
+  background: var(--surface2); border-bottom: 1px solid var(--border);
+  padding: 10px 18px; font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-muted);
+  display: flex; align-items: center; gap: 8px;
+}
+.card-body { padding: 18px; }
+
+/* GRIDS */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+
+/* FORM */
+label.lbl { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+input[type=text], input[type=number], input[type=date], select, textarea {
+  width: 100%; padding: 7px 9px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: 'IBM Plex Sans', sans-serif; font-size: 13.5px;
+  color: var(--text); background: var(--surface);
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(30,77,107,0.12);
+}
+textarea { resize: vertical; min-height: 52px; }
+input[type=number] { -moz-appearance: textfield; }
+input[type=number]::-webkit-inner-spin-button { display: none; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 13px; border: 1px solid transparent;
+  border-radius: var(--radius); font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 12.5px; font-weight: 500; cursor: pointer;
+  transition: all 0.12s; text-decoration: none; white-space: nowrap;
+}
+.btn-primary { background: var(--accent); color: white; border-color: var(--accent); }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-ghost { background: transparent; color: var(--text-muted); border-color: var(--border); }
+.btn-ghost:hover { background: var(--surface2); color: var(--text); }
+.btn-green { background: var(--green); color: white; border-color: var(--green); }
+.btn-green:hover { background: #1e4530; }
+.btn-amber { background: var(--amber-bg); color: var(--amber); border-color: #e0c870; }
+.btn-amber:hover { background: #f5e8b0; }
+.btn-red { background: var(--red-bg); color: var(--red); border-color: #e8bfbf; }
+.btn-red:hover { background: #f5d0d0; }
+.btn-sm { padding: 4px 9px; font-size: 12px; }
+
+/* ITEMS TABLE */
+.tbl-wrap { overflow-x: auto; }
+table.items { width: 100%; border-collapse: collapse; min-width: 900px; }
+table.items th {
+  background: var(--surface2); font-size: 10.5px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);
+  padding: 7px 7px; border-bottom: 2px solid var(--border); text-align: left; white-space: nowrap;
+}
+table.items td { padding: 5px 5px; border-bottom: 1px solid var(--border); vertical-align: top; }
+table.items tr:last-child td { border-bottom: none; }
+table.items tr:hover td { background: #fdfcfa; }
+td input, td select { font-size: 12.5px; padding: 5px 7px; }
+
+.td-num { width: 26px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 600; padding-top: 9px !important; }
+.td-room { min-width: 90px; }
+.td-type { min-width: 120px; }
+.td-group { min-width: 110px; }
+.td-dim { width: 72px; }
+.td-qty { width: 50px; }
+.td-price { width: 90px; }
+.td-total { width: 95px; }
+.td-del { width: 32px; text-align: center; }
+
+.price-computed {
+  background: var(--accent-light); border-color: var(--accent) !important;
+  color: var(--accent); font-weight: 600; text-align: right; cursor: default;
+}
+.total-computed {
+  background: var(--green-light); border-color: var(--green) !important;
+  color: var(--green); font-weight: 700; text-align: right; cursor: default;
+}
+.dim-hint { font-size: 10px; color: var(--text-muted); margin-top: 2px; display: block; }
+.warn-hint { font-size: 10px; color: var(--red); margin-top: 2px; display: block; }
+
+/* SURCHARGE ROW */
+.sur-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 12px; border: 1px solid var(--border);
+  border-radius: var(--radius); margin-bottom: 6px;
+  transition: background 0.1s, border-color 0.1s;
+}
+.sur-row:has(input[type=checkbox]:checked) { background: var(--accent-light); border-color: var(--accent); }
+.sur-row label { font-size: 13px; cursor: pointer; flex: 1; text-transform: none; letter-spacing: 0; color: var(--text); font-weight: 400; }
+.sur-check { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; margin-top: 2px; }
+.sur-val { font-size: 12px; color: var(--text-muted); white-space: nowrap; padding-top: 2px; }
+.sur-input-wrap { display: flex; align-items: center; gap: 5px; }
+.sur-input-wrap input { max-width: 90px; }
+
+/* SUMMARY */
+.summary-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 680px) { .summary-section { grid-template-columns: 1fr; } }
+.sum-table { width: 100%; border-collapse: collapse; }
+.sum-table td { padding: 7px 10px; }
+.sum-table tr:not(:last-child) td { border-bottom: 1px solid var(--border); }
+.sum-lbl { color: var(--text-muted); font-size: 12.5px; }
+.sum-val { text-align: right; font-weight: 600; white-space: nowrap; font-size: 13px; }
+.sum-total td { background: var(--accent); color: white; font-size: 15px; font-weight: 700; padding: 11px 14px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.sum-total .sum-lbl { color: rgba(255,255,255,0.8); font-size: 13px; }
+.discount-row td { background: #fff8e6; }
+
+/* STORAGE */
+.stor-btns { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.saved-list { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.saved-item { display: flex; align-items: center; gap: 10px; padding: 7px 12px; border-bottom: 1px solid var(--border); }
+.saved-item:last-child { border-bottom: none; }
+.saved-item:hover { background: var(--surface2); }
+.saved-name { flex: 1; font-size: 13px; }
+.saved-date { font-size: 11px; color: var(--text-muted); }
+
+/* STATUS */
+.status { padding: 7px 12px; border-radius: var(--radius); font-size: 12.5px; font-weight: 500; display: none; margin-top: 10px; }
+.status.ok { background: var(--green-light); color: var(--green); display: block; }
+.status.err { background: var(--red-bg); color: var(--red); display: block; }
+
+/* MISC */
+.note { font-size: 11.5px; color: var(--text-muted); margin-top: 5px; }
+hr.div { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+.inline-row { display: flex; align-items: center; gap: 10px; }
+.inline-row label { flex: 1; }
+
+/* PRINT */
+@media print {
+  body { background: white; }
+  .no-print { display: none !important; }
+  .card { box-shadow: none; break-inside: avoid; }
+  header { background: var(--accent) !important; color: white !important; }
+  .sum-total td { background: var(--accent) !important; color: white !important; }
+  .price-computed { background: #eef4f8 !important; }
+  .total-computed { background: #eef6f0 !important; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Kalkulátor vertikálních žaluzií</h1>
+    <div class="sub">Standard 127 mm · Lux 127 mm &nbsp;|&nbsp; Ceny s marží 21 %</div>
+  </div>
+  <div class="header-btns no-print">
+    <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Tisk / PDF</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ═══ ZÁHLAVÍ ZAKÁZKY ═══ -->
+<div class="card">
+  <div class="card-head">📋 Záhlaví zakázky</div>
+  <div class="card-body">
+    <div class="g4" style="margin-bottom:12px">
+      <div><label class="lbl">Zákazník *</label><input type="text" id="f_name" placeholder="Jan Novák" oninput="recalc()"></div>
+      <div><label class="lbl">Číslo zakázky</label><input type="text" id="f_order" placeholder="2024-001"></div>
+      <div><label class="lbl">Datum</label><input type="date" id="f_date"></div>
+      <div><label class="lbl">Telefon</label><input type="text" id="f_phone" placeholder="+420 …"></div>
+    </div>
+    <div class="g2">
+      <div><label class="lbl">Adresa</label><input type="text" id="f_address" placeholder="Ulice, město"></div>
+      <div><label class="lbl">Poznámka</label><input type="text" id="f_note" placeholder="Interní poznámka…"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ POLOŽKY ═══ -->
+<div class="card">
+  <div class="card-head">📐 Položky zakázky</div>
+  <div class="card-body" style="padding:0">
+    <div class="tbl-wrap">
+      <table class="items" id="tbl">
+        <thead>
+          <tr>
+            <th class="td-num">#</th>
+            <th class="td-room">Místnost</th>
+            <th class="td-type">Typ žaluzie</th>
+            <th class="td-group">Skupina látky</th>
+            <th class="td-dim">Šířka (mm)</th>
+            <th class="td-dim">Výška (mm)</th>
+            <th class="td-qty">Ks</th>
+            <th class="td-price">Cena/ks (Kč)</th>
+            <th class="td-total">Celkem (Kč)</th>
+            <th class="td-del"></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div style="padding:12px 14px" class="no-print">
+      <button class="btn btn-primary btn-sm" onclick="addRow()">+ Přidat řádek</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PŘÍPLATKY ═══ -->
+<div class="card">
+  <div class="card-head">⚙️ Příplatky</div>
+  <div class="card-body">
+
+    <!-- 89 mm -->
+    <div class="sur-row">
+      <input type="checkbox" class="sur-check" id="p89" onchange="recalc()">
+      <label for="p89"><strong>Provedení 89 mm</strong> — +20 % k ceně žaluzií<br>
+        <span style="font-size:11px;color:var(--text-muted)">Nelze u látek: Beata, Carol, Debra, Evelyn, Marina, Melvin, Peggy, Classic, Ronnie, Sharon, Sonia FR, Tanya, Viola, Melisa BO</span>
+      </label>
+      <span class="sur-val" id="v89">0 Kč</span>
+    </div>
+
+    <!-- Konzola -->
+    <div class="sur-row">
+      <input type="checkbox" class="sur-check" id="pKonzola" onchange="recalc()">
+      <label for="pKonzola">Konzola — 36 Kč/ks × celkový počet kusů</label>
+      <span class="sur-val" id="vKonzola">0 Kč</span>
+    </div>
+
+    <!-- Bezpečnostní prvek -->
+    <div class="sur-row">
+      <input type="checkbox" class="sur-check" id="pBez" onchange="recalc()">
+      <label for="pBez">Bezpečnostní prvek — 15 Kč/ks × celkový počet kusů</label>
+      <span class="sur-val" id="vBez">0 Kč</span>
+    </div>
+
+    <!-- Šikminy -->
+    <div class="sur-row" style="flex-wrap:wrap;gap:8px;">
+      <input type="checkbox" class="sur-check" id="pSikminy" onchange="recalc()">
+      <label for="pSikminy" style="flex:1;min-width:200px">
+        <strong>Šikminy</strong> — zadej cenu ručně (Kč)<br>
+        <span style="font-size:11px;color:var(--text-muted)">Výpočet: (vyšší výška × šířka × cena/m²) + 30 %. Platí jen pro šikmé otvory — zadej výsledek ručně.</span>
+      </label>
+      <div class="sur-input-wrap">
+        <input type="number" id="sikminyKc" value="0" min="0" step="1" oninput="recalc()" placeholder="Kč">
+        <span style="font-size:12px;color:var(--text-muted)">Kč</span>
+      </div>
+      <span class="sur-val" id="vSikminy">0 Kč</span>
+    </div>
+
+    <p class="note" style="margin-top:8px">⚠ Příplatek 89 mm se počítá z ceny žaluzií bez dalších příplatků. Konzola a bezpečnostní prvek jsou Kč/ks z celkového počtu kusů v zakázce.</p>
+  </div>
+</div>
+
+<!-- ═══ SOUHRN ═══ -->
+<div class="card">
+  <div class="card-head">💰 Souhrn zakázky</div>
+  <div class="card-body">
+    <div class="summary-section">
+      <!-- levá strana – tabulka -->
+      <div>
+        <table class="sum-table">
+          <tr>
+            <td class="sum-lbl">Žaluzie celkem</td>
+            <td class="sum-val" id="sZaluzie">0 Kč</td>
+          </tr>
+          <tr>
+            <td class="sum-lbl">Příplatky celkem</td>
+            <td class="sum-val" id="sPriplatky">0 Kč</td>
+          </tr>
+          <tr>
+            <td class="sum-lbl">Montáž</td>
+            <td class="sum-val" id="sMontaz">0 Kč</td>
+          </tr>
+          <tr class="discount-row" id="discountRow">
+            <td class="sum-lbl">Sleva (<span id="discPct">0</span> %) – bez dopravy</td>
+            <td class="sum-val" id="sSleva" style="color:var(--red)">− 0 Kč</td>
+          </tr>
+          <tr>
+            <td class="sum-lbl">Doprava</td>
+            <td class="sum-val" id="sDoprava">0 Kč</td>
+          </tr>
+          <tr class="sum-total">
+            <td class="sum-lbl">Celková cena zakázky</td>
+            <td class="sum-val" id="sCelkem">0 Kč</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- pravá strana – vstupy -->
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <label class="lbl">Montáž (Kč/ks) — výchozí 250 Kč</label>
+          <div class="inline-row">
+            <input type="number" id="montazKs" value="250" min="0" step="1" oninput="recalc()" style="max-width:120px">
+            <span style="font-size:12px;color:var(--text-muted)">× <span id="montazKsTotal">0</span> ks = <strong id="montazTotal">0 Kč</strong></span>
+          </div>
+        </div>
+
+        <div>
+          <label class="lbl">Doprava – zóna</label>
+          <select id="doprava" onchange="recalc()">
+            <option value="0">Zóna 1: do 5 km — zdarma</option>
+            <option value="300">Zóna 2: 5,1–20 km — 300 Kč</option>
+            <option value="700">Zóna 3: 21–50 km — 700 Kč</option>
+            <option value="1200">Zóna 4: 50,1–70 km — 1 200 Kč</option>
+            <option value="custom">Nad 70 km — zadat ručně</option>
+          </select>
+          <div id="dopravaCustomWrap" style="margin-top:6px;display:none">
+            <input type="number" id="dopravaCustom" value="0" min="0" step="1" oninput="recalc()" placeholder="Zadej Kč">
+          </div>
+        </div>
+
+        <div>
+          <label class="lbl">Sleva (%)</label>
+          <div class="inline-row">
+            <input type="number" id="sleva" value="0" min="0" max="100" step="0.5" oninput="recalc()" style="max-width:100px">
+            <span style="font-size:12px;color:var(--text-muted)">% z (žaluzie + příplatky + montáž)</span>
+          </div>
+          <p class="note">Sleva se nevztahuje na dopravu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ UKLÁDÁNÍ ═══ -->
+<div class="card no-print">
+  <div class="card-head">💾 Ukládání zakázek</div>
+  <div class="card-body">
+    <div class="stor-btns">
+      <button class="btn btn-green btn-sm" onclick="saveOrder()">💾 Uložit zakázku</button>
+      <button class="btn btn-ghost btn-sm" onclick="toggleSavedList()">📂 Načíst uloženou zakázku</button>
+      <button class="btn btn-amber btn-sm" onclick="exportJSON()">⬇ Exportovat jako JSON</button>
+      <label class="btn btn-ghost btn-sm" style="cursor:pointer">⬆ Importovat ze souboru JSON
+        <input type="file" accept=".json" onchange="importJSON(event)" style="display:none">
+      </label>
+      <button class="btn btn-red btn-sm" onclick="clearAll()">🗑 Nová zakázka</button>
+    </div>
+    <div id="statusMsg" class="status"></div>
+    <div id="savedListWrap" style="display:none;margin-top:10px">
+      <div id="savedList" class="saved-list"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ═══════════════════════════════════════════
+// CENÍKOVÁ DATA
+// ═══════════════════════════════════════════
+
+// Výškové pásy: [min, max] (max = Infinity pro poslední)
+const HEIGHT_BANDS = [
+  { label: '0–1500',    min: 0,    max: 1500  },
+  { label: '1510–2000', min: 1501, max: 2000  },
+  { label: '2010–2400', min: 2001, max: 2400  },
+  { label: '2410–3000', min: 2401, max: 3000  },
+  { label: '3010–4000', min: 3001, max: 4000  },
+  { label: '4010+',     min: 4001, max: Infinity }
+];
+
+// Skupiny látek: klíč = číslo skupiny, hodnoty = [cena Standard, cena Lux] pro každé pásmo
+// Pořadí pásem: 0-1500 | 1510-2000 | 2010-2400 | 2410-3000 | 3010-4000 | 4010+
+const PRICES = {
+  standard: {
+    1: [705, 599, 574, 546, 520, 497],
+    2: [766, 655, 628, 603, 574, 546],
+    3: [797, 683, 672, 628, 603, 574],
+    4: [863, 766, 724, 683, 643, 615],
+    5: [884, 789, 746, 706, 662, 639],
+    6: [904, 806, 766, 724, 683, 655],
+    7: [952, 857, 814, 772, 733, 705],
+    // Sk. 4-7 mají druhý ceník (pro větší výšky) — dle ceníku je toto 6 standardních pásem
+    // Poznámka: ceník má dva řádky pro sk. 4-7 (jiné řady), ale výšky jsou stejné pásy
+    // => data výše jsou z prvního řádku tabulky (sk.1-7 všechny pásy)
+  },
+  lux: {
+    1: [740, 636, 610, 580, 555, 530],
+    2: [802, 693, 666, 641, 612, 581],
+    3: [831, 722, 706, 666, 641, 612],
+    4: [898, 802, 763, 722, 679, 653],
+    5: [923, 826, 781, 742, 700, 676],
+    6: [939, 841, 802, 763, 722, 693],
+    7: [990, 892, 851, 808, 768, 741],
+  }
+};
+
+// Látky a jejich skupiny
+const FABRIC_GROUPS = {
+  'Skupina 1 – Sonia, Evelyn, Polly, Ronnie, Carol, Inez': 1,
+  'Skupina 2 – Corra, Beata, Jenny': 2,
+  'Skupina 3 – Sandra, Sonia FR, Ray': 3,
+  'Skupina 4 – Vanesa, Viola': 4,
+  'Skupina 5 – Aneta, Marina, Vesna': 5,
+  'Skupina 6 – Patricia, Peggy, Classic': 6,
+  'Skupina 7 – Debra, Melisa BO, Melvin, Tanya, Sharon': 7,
+};
+
+// Látky zakázané pro provedení 89 mm
+const BANNED_89 = ['Beata','Carol','Debra','Evelyn','Marina','Melvin','Peggy','Classic','Ronnie','Sharon','Sonia FR','Tanya','Viola','Melisa BO'];
+
+// Látky obsažené v každé skupině (pro validaci 89 mm)
+const GROUP_FABRICS = {
+  1: ['Sonia','Evelyn','Polly','Ronnie','Carol','Inez'],
+  2: ['Corra','Beata','Jenny'],
+  3: ['Sandra','Sonia FR','Ray'],
+  4: ['Vanesa','Viola'],
+  5: ['Aneta','Marina','Vesna'],
+  6: ['Patricia','Peggy','Classic'],
+  7: ['Debra','Melisa BO','Melvin','Tanya','Sharon'],
+};
+
+// Obsahuje skupina látky zakázané pro 89 mm?
+function groupHasBanned(groupNum) {
+  const fabrics = GROUP_FABRICS[groupNum] || [];
+  return fabrics.some(f => BANNED_89.includes(f));
+}
+function groupAllBanned(groupNum) {
+  const fabrics = GROUP_FABRICS[groupNum] || [];
+  return fabrics.every(f => BANNED_89.includes(f));
+}
+
+// ═══════════════════════════════════════════
+// VÝPOČET CENY
+// ═══════════════════════════════════════════
+
+function getPricePer_m2(type, groupNum, heightMm) {
+  const bandIdx = HEIGHT_BANDS.findIndex(b => heightMm >= b.min && heightMm <= b.max);
+  if (bandIdx === -1) return null;
+  const table = type === 'standard' ? PRICES.standard : PRICES.lux;
+  const arr = table[groupNum];
+  if (!arr) return null;
+  return arr[bandIdx];
+}
+
+function ceilKc(val) { return Math.ceil(val); }
+
+function calcRowPrice(type, groupNum, widthMm, heightMm) {
+  if (!type || !groupNum || !widthMm || !heightMm) return null;
+  const pricePerM2 = getPricePer_m2(type, groupNum, heightMm);
+  if (pricePerM2 === null) return null;
+  // plocha v m²
+  const area = (widthMm / 1000) * (heightMm / 1000);
+  return { pricePerM2, area, pricePerKs: ceilKc(area * pricePerM2) };
+}
+
+// ═══════════════════════════════════════════
+// ŘÁDKY TABULKY
+// ═══════════════════════════════════════════
+
+let rowId = 0;
+
+function addRow() {
+  rowId++;
+  const id = rowId;
+  const tbody = document.getElementById('tbody');
+  const tr = document.createElement('tr');
+  tr.id = 'row_' + id;
+  tr.innerHTML = `
+    <td class="td-num">${tbody.rows.length + 1}</td>
+    <td class="td-room"><input type="text" placeholder="Pokoj…" oninput="recalc()"></td>
+    <td class="td-type">
+      <select onchange="recalc()">
+        <option value="">– vyberte –</option>
+        <option value="standard">Standard 127</option>
+        <option value="lux">Lux 127</option>
+      </select>
+    </td>
+    <td class="td-group">
+      <select onchange="recalc(); checkBan(${id})">
+        <option value="">– vyberte –</option>
+        ${Object.keys(FABRIC_GROUPS).map(g => `<option value="${FABRIC_GROUPS[g]}">${g}</option>`).join('')}
+      </select>
+      <span class="warn-hint" id="warn_${id}" style="display:none">⚠ Skupina obsahuje látky zakázané pro 89 mm</span>
+    </td>
+    <td class="td-dim"><input type="number" min="100" max="9999" step="1" placeholder="mm" oninput="recalc()"></td>
+    <td class="td-dim"><input type="number" min="100" max="9999" step="1" placeholder="mm" oninput="recalc()"></td>
+    <td class="td-qty"><input type="number" min="1" max="999" step="1" value="1" oninput="recalc()"></td>
+    <td class="td-price"><input class="price-computed" type="text" readonly value="—" id="price_${id}"></td>
+    <td class="td-total"><input class="total-computed" type="text" readonly value="—" id="total_${id}"></td>
+    <td class="td-del"><button class="btn btn-red btn-sm no-print" onclick="delRow(${id})" title="Smazat řádek">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+  renumberRows();
+  recalc();
+}
+
+function delRow(id) {
+  const tr = document.getElementById('row_' + id);
+  if (tr) tr.remove();
+  renumberRows();
+  recalc();
+}
+
+function renumberRows() {
+  const rows = document.querySelectorAll('#tbody tr');
+  rows.forEach((tr, i) => {
+    tr.querySelector('.td-num').textContent = i + 1;
+  });
+}
+
+function checkBan(id) {
+  const tr = document.getElementById('row_' + id);
+  if (!tr) return;
+  const groupVal = parseInt(tr.querySelectorAll('select')[1].value);
+  const warn = document.getElementById('warn_' + id);
+  if (!warn) return;
+  const is89 = document.getElementById('p89').checked;
+  if (is89 && groupVal && groupHasBanned(groupVal)) {
+    warn.style.display = 'block';
+    warn.textContent = groupAllBanned(groupVal)
+      ? '⛔ Tato skupina nelze v provedení 89 mm'
+      : '⚠ Skupina obsahuje látky zakázané pro 89 mm';
+  } else {
+    warn.style.display = 'none';
+  }
+}
+
+// ═══════════════════════════════════════════
+// HLAVNÍ PŘEPOČET
+// ═══════════════════════════════════════════
+
+function fmt(n) {
+  return n.toLocaleString('cs-CZ', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' Kč';
+}
+
+function recalc() {
+  const rows = document.querySelectorAll('#tbody tr');
+  let totalZaluzie = 0;
+  let totalKs = 0;
+
+  rows.forEach(tr => {
+    const id = parseInt(tr.id.replace('row_', ''));
+    const selects = tr.querySelectorAll('select');
+    const inputs = tr.querySelectorAll('input[type=number]');
+    const type = selects[0].value;
+    const groupNum = parseInt(selects[1].value) || 0;
+    const w = parseInt(inputs[0].value) || 0;
+    const h = parseInt(inputs[1].value) || 0;
+    const qty = parseInt(inputs[2].value) || 1;
+
+    const priceEl = document.getElementById('price_' + id);
+    const totalEl = document.getElementById('total_' + id);
+
+    if (type && groupNum && w > 0 && h > 0) {
+      const res = calcRowPrice(type, groupNum, w, h);
+      if (res) {
+        const rowTotal = ceilKc(res.pricePerKs * qty);
+        priceEl.value = res.pricePerKs.toLocaleString('cs-CZ') + ' Kč';
+        totalEl.value = rowTotal.toLocaleString('cs-CZ') + ' Kč';
+        totalZaluzie += rowTotal;
+        totalKs += qty;
+      } else {
+        priceEl.value = '?';
+        totalEl.value = '?';
+      }
+    } else {
+      priceEl.value = '—';
+      totalEl.value = '—';
+    }
+
+    // 89 mm warnings
+    checkBan(id);
+  });
+
+  // Příplatky
+  const is89 = document.getElementById('p89').checked;
+  const isKonzola = document.getElementById('pKonzola').checked;
+  const isBez = document.getElementById('pBez').checked;
+  const isSikminy = document.getElementById('pSikminy').checked;
+  const sikminyKc = isSikminy ? (parseInt(document.getElementById('sikminyKc').value) || 0) : 0;
+
+  const p89val = is89 ? ceilKc(totalZaluzie * 0.20) : 0;
+  const pKonzolaVal = isKonzola ? (totalKs * 36) : 0;
+  const pBezVal = isBez ? (totalKs * 15) : 0;
+
+  document.getElementById('v89').textContent = fmt(p89val);
+  document.getElementById('vKonzola').textContent = fmt(pKonzolaVal);
+  document.getElementById('vBez').textContent = fmt(pBezVal);
+  document.getElementById('vSikminy').textContent = fmt(sikminyKc);
+
+  const totalPriplatky = p89val + pKonzolaVal + pBezVal + sikminyKc;
+
+  // Montáž
+  const montazKs = parseInt(document.getElementById('montazKs').value) || 0;
+  const montazTotal = montazKs * totalKs;
+  document.getElementById('montazKsTotal').textContent = totalKs;
+  document.getElementById('montazTotal').textContent = fmt(montazTotal);
+
+  // Sleva
+  const slevaRaw = parseFloat(document.getElementById('sleva').value) || 0;
+  const slevaBase = totalZaluzie + totalPriplatky + montazTotal;
+  const slevaVal = ceilKc(slevaBase * slevaRaw / 100);
+  document.getElementById('discPct').textContent = slevaRaw % 1 === 0 ? slevaRaw : slevaRaw.toFixed(1);
+  document.getElementById('sSleva').textContent = '− ' + fmt(slevaVal);
+  const discountRow = document.getElementById('discountRow');
+  discountRow.style.display = slevaRaw > 0 ? '' : 'none';
+
+  // Doprava
+  const dopravaSel = document.getElementById('doprava').value;
+  const customWrap = document.getElementById('dopravaCustomWrap');
+  let dopravaVal = 0;
+  if (dopravaSel === 'custom') {
+    customWrap.style.display = 'block';
+    dopravaVal = parseInt(document.getElementById('dopravaCustom').value) || 0;
+  } else {
+    customWrap.style.display = 'none';
+    dopravaVal = parseInt(dopravaSel) || 0;
+  }
+
+  const celkem = slevaBase - slevaVal + dopravaVal;
+
+  // Výpis
+  document.getElementById('sZaluzie').textContent = fmt(totalZaluzie);
+  document.getElementById('sPriplatky').textContent = fmt(totalPriplatky);
+  document.getElementById('sMontaz').textContent = fmt(montazTotal);
+  document.getElementById('sDoprava').textContent = dopravaVal === 0 ? 'zdarma' : fmt(dopravaVal);
+  document.getElementById('sCelkem').textContent = fmt(celkem);
+}
+
+// ═══════════════════════════════════════════
+// SERIALIZACE (pro uložení/export)
+// ═══════════════════════════════════════════
+
+function getState() {
+  const rows = [];
+  document.querySelectorAll('#tbody tr').forEach(tr => {
+    const id = parseInt(tr.id.replace('row_', ''));
+    const selects = tr.querySelectorAll('select');
+    const inputs = tr.querySelectorAll('input');
+    rows.push({
+      room: inputs[0].value,
+      type: selects[0].value,
+      group: selects[1].value,
+      w: inputs[1].value,
+      h: inputs[2].value,
+      qty: inputs[3].value,
+    });
+  });
+  return {
+    header: {
+      name: document.getElementById('f_name').value,
+      order: document.getElementById('f_order').value,
+      date: document.getElementById('f_date').value,
+      phone: document.getElementById('f_phone').value,
+      address: document.getElementById('f_address').value,
+      note: document.getElementById('f_note').value,
+    },
+    rows,
+    surcharges: {
+      p89: document.getElementById('p89').checked,
+      pKonzola: document.getElementById('pKonzola').checked,
+      pBez: document.getElementById('pBez').checked,
+      pSikminy: document.getElementById('pSikminy').checked,
+      sikminyKc: document.getElementById('sikminyKc').value,
+    },
+    summary: {
+      montazKs: document.getElementById('montazKs').value,
+      doprava: document.getElementById('doprava').value,
+      dopravaCustom: document.getElementById('dopravaCustom').value,
+      sleva: document.getElementById('sleva').value,
+    }
+  };
+}
+
+function loadState(state) {
+  // Header
+  const h = state.header || {};
+  document.getElementById('f_name').value = h.name || '';
+  document.getElementById('f_order').value = h.order || '';
+  document.getElementById('f_date').value = h.date || '';
+  document.getElementById('f_phone').value = h.phone || '';
+  document.getElementById('f_address').value = h.address || '';
+  document.getElementById('f_note').value = h.note || '';
+
+  // Rows
+  document.getElementById('tbody').innerHTML = '';
+  rowId = 0;
+  (state.rows || []).forEach(r => {
+    addRow();
+    const tr = document.querySelector('#tbody tr:last-child');
+    const selects = tr.querySelectorAll('select');
+    const inputs = tr.querySelectorAll('input');
+    inputs[0].value = r.room || '';
+    selects[0].value = r.type || '';
+    selects[1].value = r.group || '';
+    inputs[1].value = r.w || '';
+    inputs[2].value = r.h || '';
+    inputs[3].value = r.qty || 1;
+  });
+
+  // Surcharges
+  const s = state.surcharges || {};
+  document.getElementById('p89').checked = !!s.p89;
+  document.getElementById('pKonzola').checked = !!s.pKonzola;
+  document.getElementById('pBez').checked = !!s.pBez;
+  document.getElementById('pSikminy').checked = !!s.pSikminy;
+  document.getElementById('sikminyKc').value = s.sikminyKc || 0;
+
+  // Summary
+  const sm = state.summary || {};
+  document.getElementById('montazKs').value = sm.montazKs ?? 250;
+  document.getElementById('doprava').value = sm.doprava || '0';
+  document.getElementById('dopravaCustom').value = sm.dopravaCustom || 0;
+  document.getElementById('sleva').value = sm.sleva || 0;
+
+  recalc();
+}
+
+// ═══════════════════════════════════════════
+// STORAGE – localStorage
+// ═══════════════════════════════════════════
+
+function saveOrder() {
+  const state = getState();
+  const name = (state.header.name || 'Zákazník').trim();
+  const date = new Date().toLocaleDateString('cs-CZ');
+  const key = 'vz_' + name + '_' + Date.now();
+  state._meta = { key, name, date };
+  localStorage.setItem(key, JSON.stringify(state));
+  showStatus('Zakázka „' + name + '" uložena (' + date + ').', 'ok');
+  renderSavedList();
+}
+
+function loadOrder(key) {
+  const raw = localStorage.getItem(key);
+  if (!raw) return;
+  loadState(JSON.parse(raw));
+  document.getElementById('savedListWrap').style.display = 'none';
+  showStatus('Zakázka načtena.', 'ok');
+}
+
+function deleteOrder(key) {
+  localStorage.removeItem(key);
+  renderSavedList();
+}
+
+function toggleSavedList() {
+  const wrap = document.getElementById('savedListWrap');
+  const visible = wrap.style.display !== 'none';
+  wrap.style.display = visible ? 'none' : 'block';
+  if (!visible) renderSavedList();
+}
+
+function renderSavedList() {
+  const keys = Object.keys(localStorage).filter(k => k.startsWith('vz_'));
+  const list = document.getElementById('savedList');
+  if (!keys.length) {
+    list.innerHTML = '<div style="padding:12px 14px;font-size:12.5px;color:var(--text-muted)">Žádné uložené zakázky.</div>';
+    return;
+  }
+  list.innerHTML = keys.map(k => {
+    let meta = {};
+    try { meta = JSON.parse(localStorage.getItem(k))._meta || {}; } catch {}
+    return `<div class="saved-item">
+      <div>
+        <div class="saved-name">${meta.name || k}</div>
+        <div class="saved-date">${meta.date || ''}</div>
+      </div>
+      <div style="display:flex;gap:6px;margin-left:auto">
+        <button class="btn btn-ghost btn-sm" onclick="loadOrder('${k}')">Načíst</button>
+        <button class="btn btn-red btn-sm" onclick="deleteOrder('${k}');renderSavedList()">Smazat</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+// EXPORT / IMPORT JSON
+// ═══════════════════════════════════════════
+
+function exportJSON() {
+  const state = getState();
+  const name = (state.header.name || 'zakázka').replace(/\s+/g,'_');
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'VZ_' + name + '_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const state = JSON.parse(e.target.result);
+      loadState(state);
+      showStatus('Soubor „' + file.name + '" byl úspěšně importován.', 'ok');
+    } catch {
+      showStatus('Chyba: soubor nelze načíst (není platný JSON).', 'err');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function clearAll() {
+  if (!confirm('Opravdu smazat celou zakázku? (Data nebudou odstraněna z úložiště.)')) return;
+  document.getElementById('tbody').innerHTML = '';
+  rowId = 0;
+  document.getElementById('f_name').value = '';
+  document.getElementById('f_order').value = '';
+  document.getElementById('f_date').value = '';
+  document.getElementById('f_phone').value = '';
+  document.getElementById('f_address').value = '';
+  document.getElementById('f_note').value = '';
+  document.getElementById('p89').checked = false;
+  document.getElementById('pKonzola').checked = false;
+  document.getElementById('pBez').checked = false;
+  document.getElementById('pSikminy').checked = false;
+  document.getElementById('sikminyKc').value = 0;
+  document.getElementById('montazKs').value = 250;
+  document.getElementById('doprava').value = '0';
+  document.getElementById('dopravaCustom').value = 0;
+  document.getElementById('sleva').value = 0;
+  recalc();
+}
+
+function showStatus(msg, type) {
+  const el = document.getElementById('statusMsg');
+  el.textContent = msg;
+  el.className = 'status ' + type;
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => { el.className = 'status'; }, 4000);
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+
+document.getElementById('f_date').value = new Date().toISOString().slice(0, 10);
+addRow();
+</script>
+</body>
+</html>
