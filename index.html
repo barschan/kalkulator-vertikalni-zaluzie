@@ -109,6 +109,7 @@ table.items td{padding:5px 5px;border-bottom:1px solid var(--border);vertical-al
 table.items tr:last-child td{border-bottom:none}
 table.items tr:hover td{background:#fdfcfa}
 td input,td select{font-size:13px;padding:5px 7px}
+.td-barva{width:90px}
 .td-n{width:24px;text-align:center;font-size:11px;color:var(--muted);font-weight:600;padding-top:10px!important}
 .td-room{min-width:80px}.td-type{min-width:115px}.td-fab{min-width:165px;overflow:visible;position:relative}.td-dim{width:70px}.td-qty{width:50px}.td-price{width:92px}.td-tot{width:96px}.td-del{width:30px;text-align:center}
 .pc{background:var(--accent-lt)!important;border-color:#9dc4da!important;color:var(--accent);font-weight:600;text-align:right;cursor:default}
@@ -214,6 +215,7 @@ td input,td select{font-size:13px;padding:5px 7px}
         <th class="td-room">Místnost</th>
         <th class="td-type">Typ</th>
         <th class="td-fab">Látka <span style="font-weight:400;opacity:.7">(▼ kódy)</span></th>
+        <th class="td-barva">Barva</th>
         <th class="td-dim">Šířka mm</th>
         <th class="td-dim">Výška mm</th>
         <th class="td-qty">Ks</th>
@@ -260,7 +262,7 @@ td input,td select{font-size:13px;padding:5px 7px}
       </div>
       <span class="sur-val" id="vSik">0 Kč</span>
     </div>
-    <p class="note" style="margin-top:6px">Příplatek 89 mm = 20 % z ceny žaluzií. Konzola a bezpečnostní prvek jsou Kč/ks z celkového počtu kusů v zakázce. Sleva se nevztahuje na příplatky.</p>
+    <p class="note" style="margin-top:6px">Příplatek 89 mm = 20 % z ceny žaluzií. Konzola a bezpečnostní prvek jsou Kč/ks z celkového počtu kusů v zakázce.</p>
   </div>
 </div>
 
@@ -274,10 +276,6 @@ td input,td select{font-size:13px;padding:5px 7px}
           <tr><td class="sum-lbl">Žaluzie celkem</td><td class="sum-val" id="sZal">0 Kč</td></tr>
           <tr><td class="sum-lbl">Příplatky celkem</td><td class="sum-val" id="sPrip">0 Kč</td></tr>
           <tr><td class="sum-lbl">Montáž</td><td class="sum-val" id="sMon">0 Kč</td></tr>
-          <tr class="disc-row" id="discRow" style="display:none">
-            <td class="sum-lbl">Sleva (<span id="discPct">0</span> %) – bez dopravy</td>
-            <td class="sum-val" id="sSleva" style="color:var(--red)">− 0 Kč</td>
-          </tr>
           <tr><td class="sum-lbl">Doprava</td><td class="sum-val" id="sDop">zdarma</td></tr>
           <tr class="sum-total">
             <td class="sum-lbl">Celková cena zakázky</td>
@@ -289,7 +287,7 @@ td input,td select{font-size:13px;padding:5px 7px}
         <div>
           <label class="lbl">Montáž (Kč/ks) — výchozí 250 Kč</label>
           <div class="irow">
-            <input type="number" id="monKs" value="800" min="0" step="1" oninput="recalc()" style="max-width:110px">
+            <input type="number" id="monKs" value="250" min="0" step="1" oninput="recalc()" style="max-width:110px">
             <span style="font-size:12px;color:var(--muted)">× <span id="monN">0</span> ks = <strong id="monTot">0 Kč</strong></span>
           </div>
         </div>
@@ -306,12 +304,6 @@ td input,td select{font-size:13px;padding:5px 7px}
             <input type="number" id="dopC" value="0" min="0" step="1" oninput="recalc()" placeholder="Kč">
           </div>
         </div>
-        <div>
-          <label class="lbl">Sleva (%)</label>
-          <div class="irow">
-            <input type="number" id="sleva" value="0" min="0" max="100" step="0.5" oninput="recalc()" style="max-width:90px">
-            <span style="font-size:12px;color:var(--muted)">% z (žaluzie + montáž). Na příplatky a dopravu se nevztahuje.</span>
-          </div>
         </div>
       </div>
     </div>
@@ -325,8 +317,7 @@ td input,td select{font-size:13px;padding:5px 7px}
     <div class="stor-btns">
       <button class="btn bgr bsm" onclick="saveOrder()">💾 Uložit zakázku</button>
       <button class="btn bg_ bsm" onclick="toggleSaved()">📂 Načíst uloženou</button>
-      <button class="btn ba bsm" onclick="exportJSON()">⬇ Export JSON</button>
-      <label class="btn bg_ bsm" style="cursor:pointer">⬆ Import JSON<input type="file" accept=".json" onchange="importJSON(event)" style="display:none"></label>
+      <button class="btn bgr bsm" onclick="saveToSheets()" id="sheetsBtn">📊 Uložit do Google Sheets</button>
       <button class="btn br bsm" onclick="clearAll()">🗑 Nová zakázka</button>
     </div>
     <div id="statusMsg" class="status"></div>
@@ -552,6 +543,7 @@ function addRow(){
       </select>
     </td>
     <td class="td-fab">${buildFabricSelect('rfab_'+id,'syncFab('+id+');recalc()')}</td>
+    <td class="td-barva"><input type="text" id="rbarva_${id}" placeholder="např. 102"></td>
     <td class="td-dim"><input type="number" id="rw_${id}" min="100" max="9999" placeholder="mm" oninput="recalc()"></td>
     <td class="td-dim"><input type="number" id="rh_${id}" min="100" max="9999" placeholder="mm" oninput="recalc()"></td>
     <td class="td-qty"><input type="number" id="rqty_${id}" min="1" value="1" oninput="recalc()"></td>
@@ -582,6 +574,8 @@ function addRow(){
         <input type="number" id="cqty_${id}" min="1" value="1" oninput="si('rqty_${id}',this.value);recalc()"></div>
       <div class="s2"><label class="lbl">Látka</label>
         ${buildFabricSelect('cfab_'+id,'syncFabC('+id+');recalc()')}</div>
+      <div class="s2"><label class="lbl">Barva</label>
+        <input type="text" id="cbarva_${id}" placeholder="např. 102" oninput="si('rbarva_${id}',this.value)"></div>
       <div><label class="lbl">Šířka (mm)</label>
         <input type="number" id="cw_${id}" min="100" max="9999" placeholder="mm" oninput="si('rw_${id}',this.value);recalc()"></div>
       <div><label class="lbl">Výška (mm)</label>
@@ -687,20 +681,12 @@ function recalc(){
   document.getElementById('monN').textContent=totKs;
   document.getElementById('monTot').textContent=fmt(mTot);
 
-  // Sleva — z žaluzie + montáž (ne příplatky)
-  const slevaR=parseFloat(document.getElementById('sleva').value)||0;
-  const slevaB=totZ+mTot;
-  const slevaV=ceilKc(slevaB*slevaR/100);
-  document.getElementById('discPct').textContent=Number.isInteger(slevaR)?slevaR:slevaR.toFixed(1);
-  document.getElementById('sSleva').textContent='− '+fmt(slevaV);
-  document.getElementById('discRow').style.display=slevaR>0?'':'none';
-
   // Doprava
   const dopSel=document.getElementById('dop').value;
   document.getElementById('dopCW').style.display=dopSel==='custom'?'block':'none';
   const dopV=dopSel==='custom'?(parseInt(document.getElementById('dopC').value)||0):(parseInt(dopSel)||0);
 
-  const celk=totZ+totP+mTot-slevaV+dopV;
+  const celk=totZ+totP+mTot+dopV;
   document.getElementById('sZal').textContent=fmt(totZ);
   document.getElementById('sPrip').textContent=fmt(totP);
   document.getElementById('sMon').textContent=fmt(mTot);
@@ -719,6 +705,7 @@ function getState(){
       room:(document.getElementById('rroom_'+id)||{}).value||'',
       type:(document.getElementById('rtype_'+id)||{}).value||'',
       fi:(document.getElementById('rfab_'+id)||{}).value||'',
+      barva:(document.getElementById('rbarva_'+id)||{}).value||'',
       w:(document.getElementById('rw_'+id)||{}).value||'',
       h:(document.getElementById('rh_'+id)||{}).value||'',
       qty:(document.getElementById('rqty_'+id)||{}).value||1,
@@ -733,7 +720,7 @@ function getState(){
          pBez:document.getElementById('pBez').checked,pSik:document.getElementById('pSik').checked,
          sikKc:document.getElementById('sikKc').value},
     sum:{monKs:document.getElementById('monKs').value,dop:document.getElementById('dop').value,
-         dopC:document.getElementById('dopC').value,sleva:document.getElementById('sleva').value}
+         dopC:document.getElementById('dopC').value}
   };
 }
 
@@ -749,6 +736,7 @@ function loadState(st){
     addRow(); const id=rowId;
     const sv=(elId,val)=>{const e=document.getElementById(elId);if(e)e.value=val;};
     sv('rroom_'+id,r.room||''); sv('rtype_'+id,r.type||'');
+    sv('rbarva_'+id,r.barva||''); sv('cbarva_'+id,r.barva||'');
     sv('rw_'+id,r.w||''); sv('rh_'+id,r.h||''); sv('rqty_'+id,r.qty||1);
     sv('croom_'+id,r.room||''); sv('ctype_'+id,r.type||'');
     sv('cw_'+id,r.w||''); sv('ch_'+id,r.h||''); sv('cqty_'+id,r.qty||1);
@@ -766,7 +754,6 @@ function loadState(st){
   document.getElementById('monKs').value=sm.monKs??250;
   document.getElementById('dop').value=sm.dop||'0';
   document.getElementById('dopC').value=sm.dopC||0;
-  document.getElementById('sleva').value=sm.sleva||0;
   recalc();
 }
 
@@ -791,15 +778,66 @@ function renderSaved(){
     <div style="display:flex;gap:6px;margin-left:auto"><button class="btn bg_ bsm" onclick="loadOrder('${k}')">Načíst</button><button class="btn br bsm" onclick="deleteOrder('${k}');renderSaved()">Smazat</button></div></div>`;
   }).join('');
 }
-function exportJSON(){
-  const st=getState(),name=(st.hdr.name||'zakázka').replace(/\s+/g,'_');
-  const blob=new Blob([JSON.stringify(st,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='VZ_'+name+'_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);
-}
-function importJSON(ev){
-  const f=ev.target.files[0];if(!f)return;
-  const r=new FileReader();r.onload=e=>{try{loadState(JSON.parse(e.target.result));showSt('Soubor importován.','ok');}catch{showSt('Chyba: neplatný JSON.','err');}};
-  r.readAsText(f);ev.target.value='';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwjbYqUAhrE3uIkrWGWftIKWHlnMYK_6z8joyDDN-k7L9VSDG0ndZ6biK5giO5qNd8R/exec';
+
+function saveToSheets(){
+  const st = getState();
+  const h = st.hdr || {};
+
+  // Sestavení popisu položek
+  const polozky = [];
+  document.querySelectorAll('#tbody tr').forEach(tr => {
+    const id = parseInt(tr.id.replace('trow_',''));
+    const type = (document.getElementById('rtype_'+id)||{}).value || '';
+    const fi = parseInt((document.getElementById('rfab_'+id)||{}).value);
+    const f = FABRICS[fi];
+    const w = (document.getElementById('rw_'+id)||{}).value || '';
+    const h2 = (document.getElementById('rh_'+id)||{}).value || '';
+    const qty = (document.getElementById('rqty_'+id)||{}).value || '';
+    const room = (document.getElementById('rroom_'+id)||{}).value || '';
+    const tot = (document.getElementById('rtot_'+id)||{}).value || '';
+    const barva = (document.getElementById('rbarva_'+id)||{}).value || '';
+    if (f && type) {
+      const typLabel = type === 'std' ? 'Standard 127' : 'Lux 127';
+      polozky.push(`${room ? room+': ' : ''}${typLabel} / ${f.name}${barva ? ' / barva '+barva : ''} / ${w}×${h2}mm / ${qty}ks = ${tot}`);
+    }
+  });
+
+  const data = {
+    datum:        new Date().toLocaleString('cs-CZ'),
+    zakaznik:     h.name || '',
+    adresa:       h.address || '',
+    telefon:      h.phone || '',
+    cisloZakazky: h.order || '',
+    poznamka:     h.note || '',
+    polozky:      polozky.join(' | '),
+    zaluziecelkem: document.getElementById('sZal').textContent,
+    priplatky:    document.getElementById('sPrip').textContent,
+    montaz:       document.getElementById('sMon').textContent,
+    doprava:      document.getElementById('sDop').textContent,
+    celkem:       document.getElementById('sCelk').textContent,
+  };
+
+  const btn = document.getElementById('sheetsBtn');
+  btn.textContent = '⏳ Ukládám…';
+  btn.disabled = true;
+
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  })
+  .then(() => {
+    showSt('✅ Zakázka „'+(h.name||'?')+'" byla uložena do Google Sheets.', 'ok');
+    btn.textContent = '📊 Uložit do Google Sheets';
+    btn.disabled = false;
+  })
+  .catch(err => {
+    showSt('❌ Chyba při ukládání do Sheets: ' + err.message, 'err');
+    btn.textContent = '📊 Uložit do Google Sheets';
+    btn.disabled = false;
+  });
 }
 function clearAll(){
   if(!confirm('Opravdu smazat zakázku?'))return;
@@ -810,7 +848,7 @@ function clearAll(){
   document.getElementById('f_date').value=new Date().toISOString().slice(0,10);
   ['p89','pKonz','pBez','pSik'].forEach(id=>document.getElementById(id).checked=false);
   document.getElementById('sikKc').value=0;document.getElementById('monKs').value=250;
-  document.getElementById('dop').value='0';document.getElementById('dopC').value=0;document.getElementById('sleva').value=0;
+  document.getElementById('dop').value='0';document.getElementById('dopC').value=0;
   recalc();
 }
 function showSt(msg,type){
